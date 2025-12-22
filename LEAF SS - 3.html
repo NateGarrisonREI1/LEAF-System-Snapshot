@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LEAF System Snapshot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root { --leaf:#43a419; }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .glass {
+      background: rgba(24,24,27,.78);
+      backdrop-filter: blur(10px);
+    }
+    .soft-shadow {
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white">
+<div class="min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-black/80 border-b border-neutral-800 backdrop-blur">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <div>
+        <div class="text-sm font-semibold">LEAF System Snapshot</div>
+        <div class="text-[11px] text-neutral-400">One system • One decision</div>
+      </div>
+      <div class="flex gap-2">
+        <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800">Share</button>
+        <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800">PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-5 pb-28 space-y-4">
+
+    <!-- Hero -->
+    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow">
+      <div class="text-xs uppercase text-neutral-400 mb-1">🔥 Gas Furnace Upgrade</div>
+      <div class="text-sm text-neutral-300 mb-2">1992 Rheem → Trane S9V2</div>
+      <div class="flex gap-2">
+        <span class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">
+          Save $19/month
+        </span>
+        <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">
+          42% less CO₂
+        </span>
+      </div>
+    </section>
+
+    <!-- Current System -->
+    <section class="glass rounded-2xl p-4 border border-red-500/35 soft-shadow">
+      <div class="flex justify-between mb-2">
+        <div class="text-sm font-semibold">📷 Current System</div>
+        <span class="text-[11px] px-2 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">
+          Near end of life
+        </span>
+      </div>
+
+      <div class="flex gap-3">
+        <div class="w-24 h-24 rounded-xl overflow-hidden border border-neutral-800">
+          <img src="old-furnace.png" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 text-xs space-y-1">
+          <div class="font-semibold">1992 Rheem gas furnace</div>
+          <div>Cost to Operate: <b>$401.76/yr</b></div>
+          <div>Carbon: <b>3,760 lbs CO₂/yr</b></div>
+          <div>
+            Waste:
+            <span class="ml-1 px-2 py-0.5 rounded-full bg-red-500/15 text-red-200 text-[11px]">Inefficient</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommended System -->
+    <section class="glass rounded-2xl p-4 border border-[var(--leaf)]/40 soft-shadow">
+      <div class="flex justify-between mb-2">
+        <div class="text-sm font-semibold">✨ Recommended System</div>
+        <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+          High efficiency
+        </span>
+      </div>
+
+      <div class="flex gap-3">
+        <div class="w-24 h-24 rounded-xl overflow-hidden border border-neutral-800">
+          <img src="new-furnace.png" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 text-xs space-y-1">
+          <div class="font-semibold">Trane S9V2 furnace</div>
+          <div>Est. Cost to Operate: <b>$173.78/yr</b></div>
+          <div>Carbon: <b>1,626 lbs CO₂/yr</b></div>
+          <div>
+            Waste:
+            <span class="ml-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-200 text-[11px]">Efficient</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delta -->
+    <section class="rounded-2xl p-4 bg-[#043b14] border border-[var(--leaf)]/40 soft-shadow">
+      <div class="text-sm font-semibold">
+        🌱 You save <span class="text-emerald-200">$228/yr</span> and cut
+        <span class="text-emerald-200">2,134 lbs CO₂/yr</span>
+      </div>
+    </section>
+
+    <!-- Cost & Savings -->
+    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow text-xs space-y-1">
+      <div class="text-sm font-semibold mb-2">💰 Cost & Savings</div>
+      <div>Estimated Project Cost: <b>$9,100</b></div>
+      <div>Estimated Monthly Payment: <b>$73.96</b></div>
+      <div>Estimated Monthly Savings: <b>$19.00</b></div>
+      <div>Home Value Increase: <b>$3,712.50</b></div>
+      <div>ROI: <b>110.7%</b></div>
+
+      <div class="mt-3 rounded-xl bg-[var(--leaf)] text-black p-3 text-center">
+        <div class="text-xs uppercase font-semibold">Savings Over Lifespan</div>
+        <div class="text-lg font-bold">$5,699.50</div>
+        <div class="text-[11px]">over 25 years</div>
+      </div>
+    </section>
+
+    <!-- Decision Section -->
+    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow">
+      <div class="flex justify-between mb-2">
+        <div class="text-sm font-semibold">✅ Does this decision make sense?</div>
+        <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+          Likely makes sense
+        </span>
+      </div>
+
+      <div class="text-xs space-y-1">
+        <div>Net Cost (after incentives): <b>$8,500</b></div>
+        <div>Current System Life Remaining: <b>0–3 yrs</b></div>
+        <div>New System Lifespan: <b>20–25 yrs</b></div>
+        <div>Payback Period: <b>~4–6 yrs</b></div>
+        <div class="mt-2">
+          Key Outcomes:
+          <ul class="list-disc list-inside">
+            <li>$228/year savings</li>
+            <li>2,134 lbs CO₂ reduction</li>
+            <li>$5,699 lifetime value</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-neutral-400 mt-2">
+        Final pricing and incentives confirmed by contractor quote.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CTA -->
+  <div class="fixed bottom-0 inset-x-0 bg-black/90 border-t border-neutral-800">
+    <div class="max-w-md mx-auto px-4 py-3">
+      <button class="w-full bg-[var(--leaf)] text-black font-semibold py-3 rounded-full text-sm">
+        🔨 Get Exact Price & Schedule With Contractor
+      </button>
+      <div class="text-[11px] text-neutral-400 text-center mt-1">
+        No obligation • Final price from contractor
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
