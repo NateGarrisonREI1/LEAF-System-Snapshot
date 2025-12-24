@@ -8,170 +8,1045 @@
 
   <style>
     :root { --leaf:#43a419; }
-    body {
+    body{
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    .glass {
+    .glass{
       background: rgba(24,24,27,.78);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
-    .soft-shadow {
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    .soft-shadow{
+      box-shadow: 0 18px 45px rgba(0,0,0,.42);
     }
+    .pop{ transition: transform .18s ease; }
+    .pop:hover{ transform: translateY(-1px) scale(1.01); }
+    summary::-webkit-details-marker{ display:none; }
+
+    /* --- SLIDERS (single-track look) --- */
+    input[type="range"]{
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 32px;            /* room for thumb */
+      background: transparent; /* IMPORTANT */
+      outline: none;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Hide default track completely (we use .range-band) */
+    input[type="range"]::-webkit-slider-runnable-track{
+      height: 12px;
+      background: transparent;
+      border-radius: 999px;
+    }
+    input[type="range"]::-moz-range-track{
+      height: 12px;
+      background: transparent;
+      border-radius: 999px;
+    }
+
+    /* Thumb */
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--leaf);
+      border: 2px solid rgba(0,0,0,.55);
+      box-shadow: 0 12px 22px rgba(0,0,0,.45), 0 0 0 6px rgba(67,164,25,.12);
+      cursor: pointer;
+      margin-top: 1px;
+      transform: translateZ(0);
+    }
+    input[type="range"]::-moz-range-thumb{
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--leaf);
+      border: 2px solid rgba(0,0,0,.55);
+      box-shadow: 0 12px 22px rgba(0,0,0,.45), 0 0 0 6px rgba(67,164,25,.12);
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+
+    .slider-wrap{
+      position: relative;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    /* Single visible track */
+    .range-band{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Fill-to-thumb glow */
+    .range-band .fill{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      border-radius: 999px;
+      background: rgba(67,164,25,.18);
+      z-index: 0;
+      transition: width .06s linear;
+    }
+
+    /* LEAF “in-range” highlight band (more visible) */
+    .range-band .ok{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0%;
+      width: 0%;
+      border-radius: 999px;
+
+      background: linear-gradient(90deg,
+        rgba(67,164,25,.18),
+        rgba(67,164,25,.55),
+        rgba(67,164,25,.18)
+      );
+      border: 1px solid rgba(67,164,25,.55);
+
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,.25) inset,
+        0 0 16px rgba(67,164,25,.22);
+
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .band-label{
+      font-size: 10px;
+      color: rgba(255,255,255,.45);
+      display:flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    /* --- Reset “haptic” feel (visual) --- */
+    @keyframes softPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+    @keyframes thumbBounce {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(0.90); }
+      100% { transform: scale(1); }
+    }
+    @keyframes glowPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(67,164,25,.00); }
+      50%  { box-shadow: 0 0 0 10px rgba(67,164,25,.14); }
+      100% { box-shadow: 0 0 0 0 rgba(67,164,25,.00); }
+    }
+    .reset-pop { animation: softPop .22s ease; }
+    .band-pulse { animation: glowPulse .28s ease; }
+
+    /* Apply bounce by toggling this class on the input element */
+    input.thumb-bounce::-webkit-slider-thumb{ animation: thumbBounce .22s ease; }
+    input.thumb-bounce::-moz-range-thumb{ animation: thumbBounce .22s ease; }
   </style>
 </head>
 
 <body class="bg-black text-white">
 <div class="min-h-screen">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-30 bg-black/80 border-b border-neutral-800 backdrop-blur">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-      <div>
-        <div class="text-sm font-semibold">LEAF System Snapshot</div>
-        <div class="text-[11px] text-neutral-400">One system • One decision</div>
-      </div>
-      <div class="flex gap-2">
-        <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800">Share</button>
-        <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800">PDF</button>
-      </div>
+<header class="sticky top-0 z-30 bg-black/70 border-b border-neutral-800 backdrop-blur">
+  <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+    <div>
+      <div class="text-sm font-semibold">LEAF System Snapshot</div>
+      <div class="text-[11px] text-neutral-400">Range-based upgrade guidance</div>
     </div>
-  </header>
-
-  <main class="max-w-md mx-auto px-4 pt-5 pb-28 space-y-4">
-
-    <!-- Hero -->
-    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow">
-      <div class="text-xs uppercase text-neutral-400 mb-1">🔥 Gas Furnace Upgrade</div>
-      <div class="text-sm text-neutral-300 mb-2">1992 Rheem → Trane S9V2</div>
-      <div class="flex gap-2">
-        <span class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">
-          Save $19/month
-        </span>
-        <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">
-          42% less CO₂
-        </span>
-      </div>
-    </section>
-
-    <!-- Current System -->
-    <section class="glass rounded-2xl p-4 border border-red-500/35 soft-shadow">
-      <div class="flex justify-between mb-2">
-        <div class="text-sm font-semibold">📷 Current System</div>
-        <span class="text-[11px] px-2 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">
-          Near end of life
-        </span>
-      </div>
-
-      <div class="flex gap-3">
-        <div class="w-24 h-24 rounded-xl overflow-hidden border border-neutral-800">
-          <img src="old-furnace.png" class="w-full h-full object-cover" />
-        </div>
-        <div class="flex-1 text-xs space-y-1">
-          <div class="font-semibold">1992 Rheem gas furnace</div>
-          <div>Cost to Operate: <b>$401.76/yr</b></div>
-          <div>Carbon: <b>3,760 lbs CO₂/yr</b></div>
-          <div>
-            Waste:
-            <span class="ml-1 px-2 py-0.5 rounded-full bg-red-500/15 text-red-200 text-[11px]">Inefficient</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Recommended System -->
-    <section class="glass rounded-2xl p-4 border border-[var(--leaf)]/40 soft-shadow">
-      <div class="flex justify-between mb-2">
-        <div class="text-sm font-semibold">✨ Recommended System</div>
-        <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
-          High efficiency
-        </span>
-      </div>
-
-      <div class="flex gap-3">
-        <div class="w-24 h-24 rounded-xl overflow-hidden border border-neutral-800">
-          <img src="new-furnace.png" class="w-full h-full object-cover" />
-        </div>
-        <div class="flex-1 text-xs space-y-1">
-          <div class="font-semibold">Trane S9V2 furnace</div>
-          <div>Est. Cost to Operate: <b>$173.78/yr</b></div>
-          <div>Carbon: <b>1,626 lbs CO₂/yr</b></div>
-          <div>
-            Waste:
-            <span class="ml-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-200 text-[11px]">Efficient</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Delta -->
-    <section class="rounded-2xl p-4 bg-[#043b14] border border-[var(--leaf)]/40 soft-shadow">
-      <div class="text-sm font-semibold">
-        🌱 You save <span class="text-emerald-200">$228/yr</span> and cut
-        <span class="text-emerald-200">2,134 lbs CO₂/yr</span>
-      </div>
-    </section>
-
-    <!-- Cost & Savings -->
-    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow text-xs space-y-1">
-      <div class="text-sm font-semibold mb-2">💰 Cost & Savings</div>
-      <div>Estimated Project Cost: <b>$9,100</b></div>
-      <div>Estimated Monthly Payment: <b>$73.96</b></div>
-      <div>Estimated Monthly Savings: <b>$19.00</b></div>
-      <div>Home Value Increase: <b>$3,712.50</b></div>
-      <div>ROI: <b>110.7%</b></div>
-
-      <div class="mt-3 rounded-xl bg-[var(--leaf)] text-black p-3 text-center">
-        <div class="text-xs uppercase font-semibold">Savings Over Lifespan</div>
-        <div class="text-lg font-bold">$5,699.50</div>
-        <div class="text-[11px]">over 25 years</div>
-      </div>
-    </section>
-
-    <!-- Decision Section -->
-    <section class="glass rounded-2xl p-4 border border-neutral-800 soft-shadow">
-      <div class="flex justify-between mb-2">
-        <div class="text-sm font-semibold">✅ Does this decision make sense?</div>
-        <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
-          Likely makes sense
-        </span>
-      </div>
-
-      <div class="text-xs space-y-1">
-        <div>Net Cost (after incentives): <b>$8,500</b></div>
-        <div>Current System Life Remaining: <b>0–3 yrs</b></div>
-        <div>New System Lifespan: <b>20–25 yrs</b></div>
-        <div>Payback Period: <b>~4–6 yrs</b></div>
-        <div class="mt-2">
-          Key Outcomes:
-          <ul class="list-disc list-inside">
-            <li>$228/year savings</li>
-            <li>2,134 lbs CO₂ reduction</li>
-            <li>$5,699 lifetime value</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="text-[11px] text-neutral-400 mt-2">
-        Final pricing and incentives confirmed by contractor quote.
-      </div>
-    </section>
-
-  </main>
-
-  <!-- CTA -->
-  <div class="fixed bottom-0 inset-x-0 bg-black/90 border-t border-neutral-800">
-    <div class="max-w-md mx-auto px-4 py-3">
-      <button class="w-full bg-[var(--leaf)] text-black font-semibold py-3 rounded-full text-sm">
-        🔨 Get Exact Price & Schedule With Contractor
-      </button>
-      <div class="text-[11px] text-neutral-400 text-center mt-1">
-        No obligation • Final price from contractor
-      </div>
+    <div class="flex gap-2">
+      <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 pop">Share</button>
+      <button class="text-xs px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 pop">PDF</button>
     </div>
   </div>
+</header>
+
+<main class="max-w-md mx-auto px-4 pt-5 pb-28 space-y-4">
+
+  <!-- HERO -->
+  <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
+    <div class="text-xs uppercase text-neutral-400 mb-1">🔥 HVAC • Gas Furnace</div>
+    <div class="text-base font-semibold">Direct-replacement gas furnace upgrade</div>
+    <div class="text-xs text-neutral-300 mt-1">
+      LEAF provides ranges so you can evaluate contractor quotes with confidence.
+    </div>
+    <div class="flex flex-wrap gap-2 mt-3">
+      <span class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">
+        Save ~$19–$35/mo
+      </span>
+      <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">
+        ~30–45% less CO₂
+      </span>
+    </div>
+  </section>
+
+  <!-- CURRENT -->
+  <section class="glass rounded-3xl p-4 border border-red-500/30 soft-shadow pop">
+    <div class="flex justify-between mb-3">
+      <div class="text-sm font-semibold">📷 Current system</div>
+      <span class="text-[11px] px-3 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">
+        Near end of life
+      </span>
+    </div>
+    <div class="flex gap-3">
+      <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
+        <img src="old-furnace.png" class="w-full h-full object-cover" />
+      </div>
+      <div class="flex-1 text-xs space-y-1">
+        <div class="font-semibold">Existing gas furnace</div>
+        <div>Annual cost: <b>$350–$450</b></div>
+        <div>Carbon: <b>3,400–4,000 lbs/yr</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDED -->
+  <section class="glass rounded-3xl p-4 border border-[var(--leaf)]/35 soft-shadow pop">
+    <div class="flex justify-between mb-3">
+      <div class="text-sm font-semibold">✨ Recommended upgrade</div>
+      <span class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+        High efficiency
+      </span>
+    </div>
+    <div class="flex gap-3">
+      <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
+        <img src="new-furnace.png" class="w-full h-full object-cover" />
+      </div>
+      <div class="flex-1 text-xs space-y-1">
+        <div class="font-semibold">High-efficiency gas furnace</div>
+        <div>Expected cost: <b>$170–$260</b></div>
+        <div>Carbon: <b>1,600–2,400 lbs/yr</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST & SAVINGS RANGE (STATIC CARD) -->
+  <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
+    <summary class="cursor-pointer">
+      <div class="flex justify-between items-center">
+        <div class="text-sm font-semibold">💰 Cost & savings range</div>
+        <span class="text-[11px] text-neutral-400">Tap for details</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs mt-3">
+        <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+          <div class="text-neutral-400">Install cost</div>
+          <div class="text-lg font-bold">$5,000–$7,000</div>
+        </div>
+        <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+          <div class="text-neutral-400">Monthly savings</div>
+          <div class="text-lg font-bold">$19–$35</div>
+        </div>
+      </div>
+    </summary>
+    <div class="mt-4 text-xs space-y-2">
+      <div class="font-semibold">Why it’s a range</div>
+      <ul class="list-disc list-inside text-neutral-300 space-y-1">
+        <li>Based on similar installs in comparable homes</li>
+        <li>Accounts for typical labor, permits, and equipment size</li>
+        <li>Savings modeled from utility data + typical runtime assumptions</li>
+        <li>Final scope can change due to ductwork/access/electrical needs</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- INTERACTIVE RANGE SLIDERS + QUICK READ -->
+  <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <div class="text-sm font-semibold">🎚️ Test your quote</div>
+        <div class="text-[11px] text-neutral-400 mt-1">
+          Slide price + savings. LEAF will help you sanity-check and prepare questions for your contractor.
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="resetBtn"
+          class="text-[11px] px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 pop">
+          Reset
+        </button>
+
+        <span id="overallBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+          Looks good ✅
+        </span>
+      </div>
+    </div>
+
+    <!-- Price slider card -->
+    <div class="mt-4 rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+      <div class="flex items-center justify-between">
+        <div class="text-xs text-neutral-400">Contractor price</div>
+        <div class="flex items-center gap-2">
+          <span id="costBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+            Within range
+          </span>
+          <div class="text-sm font-bold" id="priceValue">$6,000</div>
+        </div>
+      </div>
+
+      <div class="mt-3 slider-wrap">
+        <div class="range-band" aria-hidden="true" id="priceBandTrack">
+          <div id="priceBandFill" class="fill"></div>
+          <div id="priceBandOK" class="ok"></div>
+        </div>
+        <input id="priceSlider" type="range" min="3000" max="15000" step="100" value="6000" />
+        <div class="band-label">
+          <span id="priceBandMinLabel">$5,000</span>
+          <span id="priceBandMaxLabel">$7,000</span>
+        </div>
+      </div>
+
+      <div class="mt-2 text-[11px] text-neutral-400">
+        LEAF price range: <b>$5,000–$7,000</b>
+      </div>
+    </div>
+
+    <!-- Savings slider card -->
+    <div class="mt-3 rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+      <div class="flex items-center justify-between">
+        <div class="text-xs text-neutral-400">Monthly savings</div>
+        <div class="flex items-center gap-2">
+          <span id="savingsBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+            Within range
+          </span>
+          <div class="text-sm font-bold" id="savingsValue">$25/mo</div>
+        </div>
+      </div>
+
+      <div class="mt-3 slider-wrap">
+        <div class="range-band" aria-hidden="true" id="savingsBandTrack">
+          <div id="savingsBandFill" class="fill"></div>
+          <div id="savingsBandOK" class="ok"></div>
+        </div>
+        <input id="savingsSlider" type="range" min="0" max="80" step="1" value="25" />
+        <div class="band-label">
+          <span id="savingsBandMinLabel">$19/mo</span>
+          <span id="savingsBandMaxLabel">$35/mo</span>
+        </div>
+      </div>
+
+      <div class="mt-2 text-[11px] text-neutral-400">
+        LEAF savings baseline (adjusted): <b id="dynamicSavingsRange">$19–$35/mo</b>
+      </div>
+    </div>
+
+    <!-- QUICK READ -->
+    <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
+      <div class="text-xs text-neutral-400">Quick read</div>
+      <div class="text-sm font-semibold mt-1" id="overallHeadline">This looks like a solid deal.</div>
+
+      <div class="mt-2 text-[11px] text-neutral-300">
+        <div class="font-semibold text-neutral-200">Good questions to ask the contractor</div>
+        <ul id="quickReadQuestionsVisible" class="list-disc list-inside mt-1 space-y-1"></ul>
+      </div>
+
+      <details class="mt-2">
+        <summary class="cursor-pointer text-[11px] text-emerald-300">
+          Why this message + more questions
+        </summary>
+
+        <div class="mt-2 text-[11px] text-neutral-300 space-y-3">
+          <div>
+            <div class="font-semibold text-neutral-200">Why LEAF is saying this</div>
+            <ul id="quickReadWhy" class="list-disc list-inside mt-1 space-y-1"></ul>
+          </div>
+
+          <div>
+            <div class="font-semibold text-neutral-200">More questions (optional)</div>
+            <ul id="quickReadQuestionsMore" class="list-disc list-inside mt-1 space-y-1"></ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- INCENTIVES -->
+  <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
+    <summary class="cursor-pointer">
+      <div class="flex justify-between items-center">
+        <div class="text-sm font-semibold">🏷️ Incentives & rebates</div>
+        <span class="text-[11px] text-neutral-400">Tap for details</span>
+      </div>
+      <div class="mt-2 text-xs font-bold">$750–$3,000+ typical</div>
+      <div class="text-[11px] text-neutral-400 mt-1">Federal • State • Utility</div>
+    </summary>
+
+    <div class="mt-4 space-y-3 text-xs">
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="font-semibold">🇺🇸 Federal</div>
+        <div>Tax credit example: <b>20–30%</b> up to <b>$600–$2,000</b></div>
+        <div class="text-[11px] text-neutral-400 mt-1">Claimed by homeowner when filing taxes.</div>
+      </div>
+
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="font-semibold">🏛️ State</div>
+        <div>Program rebates often <b>$500–$1,500</b> (varies by state & funding)</div>
+        <div class="text-[11px] text-neutral-400 mt-1">Eligibility can depend on equipment + participating contractors.</div>
+      </div>
+
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="font-semibold">⚡ Local / Utility</div>
+        <div>Flat rebates typically <b>$250–$750</b></div>
+        <div class="text-[11px] text-neutral-400 mt-1">Often applied at install or submitted after completion.</div>
+      </div>
+
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="font-semibold">🔗 Helpful links</div>
+        <div class="mt-2 flex flex-col gap-2">
+          <a href="https://www.irs.gov/pub/irs-pdf/f5695.pdf" target="_blank"
+            class="text-emerald-300 underline text-[11px]">
+            IRS Form 5695 (PDF)
+          </a>
+          <a href="https://www.energystar.gov/rebate-finder" target="_blank"
+            class="text-emerald-300 underline text-[11px]">
+            ENERGY STAR Rebate Finder
+          </a>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-neutral-400">
+        LEAF identifies likely incentives based on system type and location. Contractors confirm eligibility,
+        pricing, and paperwork requirements.
+      </div>
+    </div>
+  </details>
+
+  <!-- DOES THIS MAKE SENSE? -->
+  <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
+    <div class="flex items-center justify-between">
+      <div class="text-sm font-semibold">🧠 Does this decision make sense?</div>
+      <span id="decisionBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
+        Likely yes ✅
+      </span>
+    </div>
+
+    <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="text-neutral-400">Install cost (slider)</div>
+        <div class="text-base font-bold" id="msInstallCost">$6,000</div>
+      </div>
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="text-neutral-400">Monthly savings (slider)</div>
+        <div class="text-base font-bold" id="msMonthlySavings">$25/mo</div>
+      </div>
+
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 col-span-2">
+        <div class="text-neutral-400">Estimated net cost (after incentives)</div>
+        <div class="text-base font-bold" id="msNetCostRange">$3,500–$4,500</div>
+        <div class="text-[11px] text-neutral-400 mt-1">
+          Based on incentive estimates shown above (contractor confirms final eligibility).
+        </div>
+      </div>
+
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="text-neutral-400">Simple payback (range)</div>
+        <div class="text-base font-bold" id="msPaybackRange">~12–15 yrs</div>
+      </div>
+      <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
+        <div class="text-neutral-400">Lifetime ROI (range)</div>
+        <div class="text-base font-bold" id="msROIRange">80–110%</div>
+      </div>
+    </div>
+
+    <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
+      <div class="text-xs text-neutral-400">Decision summary</div>
+      <div class="text-sm font-semibold mt-1" id="msSummaryHeadline">This looks financially reasonable.</div>
+      <div class="text-[11px] text-neutral-300 mt-1" id="msSummaryText">
+        If the contractor quote lands within the LEAF ranges, this is typically a strong replacement decision.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- CTA -->
+<div class="fixed bottom-0 inset-x-0 bg-black/80 border-t border-neutral-800 backdrop-blur">
+  <div class="max-w-md mx-auto px-4 py-3">
+    <button class="w-full bg-[var(--leaf)] text-black font-semibold py-3 rounded-full text-sm pop">
+      🔎 Get an exact bid from a contractor
+    </button>
+    <div class="text-[11px] text-neutral-400 text-center mt-1">
+      Compare the quote against your LEAF range
+    </div>
+  </div>
+</div>
 
 </div>
+
+<script>
+  // -------------------------
+  // LEAF BASE INPUTS
+  // -------------------------
+  const LEAF_PRICE_MIN = 5000;
+  const LEAF_PRICE_MAX = 7000;
+
+  const BASE_SAVINGS_MIN = 19;  // $/mo
+  const BASE_SAVINGS_MAX = 35;  // $/mo
+
+  // Incentives are NOT slider-driven (kept simple)
+  const INCENTIVES_LOW  = 750;
+  const INCENTIVES_HIGH = 3000;
+
+  // Lifespan used for payback/lifetime context
+  const LIFESPAN_YEARS_LOW  = 20;
+  const LIFESPAN_YEARS_HIGH = 25;
+
+  // Cost thresholds
+  const COST_UNREALISTIC_BELOW = LEAF_PRICE_MIN - 500;
+  const COST_LIKELY_OVER_ABOVE = LEAF_PRICE_MAX;
+  const COST_OVERPRICED_ABOVE  = LEAF_PRICE_MAX + 3000;
+
+  // Savings thresholds relative to dynamic baseline
+  const SAVINGS_OPTIMISTIC_BUFFER = 8;
+  const SAVINGS_UNREALISTIC_BUFFER = 20; // becomes "Highly optimistic (best case)"
+
+  // -------------------------
+  // DOM
+  // -------------------------
+  const priceSlider = document.getElementById("priceSlider");
+  const savingsSlider = document.getElementById("savingsSlider");
+
+  const priceValue = document.getElementById("priceValue");
+  const savingsValue = document.getElementById("savingsValue");
+
+  const costBadge = document.getElementById("costBadge");
+  const savingsBadge = document.getElementById("savingsBadge");
+
+  const overallBadge = document.getElementById("overallBadge");
+  const overallHeadline = document.getElementById("overallHeadline");
+
+  const quickReadWhy = document.getElementById("quickReadWhy");
+  const quickReadQuestionsVisible = document.getElementById("quickReadQuestionsVisible");
+  const quickReadQuestionsMore = document.getElementById("quickReadQuestionsMore");
+
+  const dynamicSavingsRangeLabel = document.getElementById("dynamicSavingsRange");
+
+  const decisionBadge = document.getElementById("decisionBadge");
+
+  const priceBandOK = document.getElementById("priceBandOK");
+  const savingsBandOK = document.getElementById("savingsBandOK");
+  const priceBandFill = document.getElementById("priceBandFill");
+  const savingsBandFill = document.getElementById("savingsBandFill");
+
+  const priceBandMinLabel = document.getElementById("priceBandMinLabel");
+  const priceBandMaxLabel = document.getElementById("priceBandMaxLabel");
+  const savingsBandMinLabel = document.getElementById("savingsBandMinLabel");
+  const savingsBandMaxLabel = document.getElementById("savingsBandMaxLabel");
+
+  // Makes-sense metrics
+  const msInstallCost = document.getElementById("msInstallCost");
+  const msMonthlySavings = document.getElementById("msMonthlySavings");
+  const msNetCostRange = document.getElementById("msNetCostRange");
+  const msPaybackRange = document.getElementById("msPaybackRange");
+  const msROIRange = document.getElementById("msROIRange");
+  const msSummaryHeadline = document.getElementById("msSummaryHeadline");
+  const msSummaryText = document.getElementById("msSummaryText");
+
+  // Reset
+  const resetBtn = document.getElementById("resetBtn");
+  const priceBandTrack = document.getElementById("priceBandTrack");
+  const savingsBandTrack = document.getElementById("savingsBandTrack");
+
+  // -------------------------
+  // HELPERS
+  // -------------------------
+  const formatMoney = (n) => "$" + Math.round(n).toLocaleString("en-US");
+  const formatMoneyRange = (a, b) => `${formatMoney(a)}–${formatMoney(b)}`;
+  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+  function setBadge(el, tone, text){
+    const tones = {
+      good: "bg-emerald-500/15 text-emerald-200 border border-emerald-500/30",
+      warn: "bg-yellow-500/15 text-yellow-200 border border-yellow-500/30",
+      bad:  "bg-red-500/15 text-red-200 border border-red-500/25",
+      neutral: "bg-neutral-800/60 text-neutral-200 border border-neutral-700"
+    };
+    el.className = `text-[11px] px-3 py-1 rounded-full ${tones[tone] || tones.neutral}`;
+    el.textContent = text;
+  }
+
+  function setBand(okEl, sliderMin, sliderMax, okMin, okMax){
+    const span = sliderMax - sliderMin;
+    const leftPct = ((okMin - sliderMin) / span) * 100;
+    const rightPct = ((okMax - sliderMin) / span) * 100;
+    const L = Math.max(0, Math.min(100, leftPct));
+    const R = Math.max(0, Math.min(100, rightPct));
+    okEl.style.left = `${L}%`;
+    okEl.style.width = `${Math.max(0, R - L)}%`;
+  }
+
+  function setFill(fillEl, sliderMin, sliderMax, value){
+    const span = sliderMax - sliderMin;
+    const pct = ((value - sliderMin) / span) * 100;
+    fillEl.style.width = `${clamp(pct, 0, 100)}%`;
+  }
+
+  // Savings baseline can bump slightly when price is high (premium systems might save a bit more)
+  function dynamicSavingsRange(price){
+    const over = Math.max(0, price - LEAF_PRICE_MAX);
+    const steps = Math.floor(over / 1000);
+    const bump = steps * 2; // $2/mo per $1k above LEAF max
+    return { min: BASE_SAVINGS_MIN + bump, max: BASE_SAVINGS_MAX + bump };
+  }
+
+  function classifyCost(price){
+    if (price < COST_UNREALISTIC_BELOW) return "unreal_low";
+    if (price < LEAF_PRICE_MIN) return "low";
+    if (price > COST_OVERPRICED_ABOVE) return "over";        // RED state
+    if (price > LEAF_PRICE_MAX) return "likely_over";
+    return "in";
+  }
+
+  function classifySavings(savings, dynMin, dynMax){
+    const optimisticMax = dynMax + SAVINGS_OPTIMISTIC_BUFFER;
+    const highlyOptimisticMax = dynMax + SAVINGS_UNREALISTIC_BUFFER;
+
+    if (savings > highlyOptimisticMax) return "highly_optimistic"; // RED state (best-case)
+    if (savings > optimisticMax) return "optimistic";
+    if (savings < dynMin) return "low";
+    return "in";
+  }
+
+  // -------------------------
+  // QUICK READ MESSAGE LIBRARY
+  // -------------------------
+  function quickReadMessage(costClass, savingsClass){
+    if ((costClass === "unreal_low" || costClass === "low") && (savingsClass === "optimistic" || savingsClass === "highly_optimistic")){
+      return {
+        tone: "warn",
+        headline: "This looks unusually good — worth a quick scope check.",
+        why: [
+          "Low install price + very high savings can happen, but it’s uncommon without a clear reason.",
+          "A quick scope walk-through prevents surprise add-ons later."
+        ],
+        qVisible: [
+          "What’s included in the install price (equipment, labor, permits)?",
+          "Anything commonly excluded that could add cost later?"
+        ],
+        qMore: [
+          "What assumptions were used to estimate savings (runtime, thermostat setpoints)?",
+          "Is there extra work (venting, duct changes, electrical) that could change cost?"
+        ]
+      };
+    }
+
+    if ((costClass === "over" || costClass === "likely_over") && (savingsClass === "low")){
+      return {
+        tone: "warn",
+        headline: "This can still be a good upgrade — but value depends on scope.",
+        why: [
+          "Higher pricing can reflect real site conditions or premium equipment.",
+          "With lower savings, the decision may lean more on reliability and comfort."
+        ],
+        qVisible: [
+          "What’s driving the price (access, ductwork, electrical, permits)?",
+          "Is there a simpler option that still meets our needs?"
+        ],
+        qMore: [
+          "Which comfort/reliability benefits should we expect with this option?",
+          "Would an itemized quote help compare apples-to-apples?"
+        ]
+      };
+    }
+
+    if ((costClass === "likely_over" || costClass === "over") && (savingsClass === "in" || savingsClass === "optimistic")){
+      return {
+        tone: "warn",
+        headline: "Premium system pricing — confirm the features match the price.",
+        why: [
+          "Higher-end systems can justify higher cost if efficiency, controls, and warranty support it.",
+          "Confirm what makes this option different from a standard replacement."
+        ],
+        qVisible: [
+          "What features justify the premium compared to a standard replacement?",
+          "What warranty and performance details support the price?"
+        ],
+        qMore: [
+          "What would a mid-range option cost and how would performance differ?",
+          "Can you confirm full scope before scheduling?"
+        ]
+      };
+    }
+
+    if (costClass === "in" && savingsClass === "optimistic"){
+      return {
+        tone: "good",
+        headline: "Great outlook — just confirm the savings assumptions.",
+        why: [
+          "Price is in the typical range, and higher savings are possible depending on usage.",
+          "A quick assumptions check helps set realistic expectations."
+        ],
+        qVisible: [
+          "What assumptions were used to estimate savings?",
+          "How close are those assumptions to how we actually live?"
+        ],
+        qMore: [
+          "What would savings look like under a more conservative usage pattern?",
+          "Are there add-ons (controls, airflow tweaks) that improve savings further?"
+        ]
+      };
+    }
+
+    if (costClass === "in" && savingsClass === "in"){
+      return {
+        tone: "good",
+        headline: "This looks like a strong value upgrade.",
+        why: [
+          "Price and savings align with what LEAF typically sees for this replacement.",
+          "If the contractor quote lands within range, outcomes are usually predictable."
+        ],
+        qVisible: [
+          "Can you confirm what’s included so I know exactly what I’m getting?",
+          "What’s the install timeline if we move forward?"
+        ],
+        qMore: [
+          "Are permits/inspections handled as part of the install?",
+          "What maintenance should I expect going forward?"
+        ]
+      };
+    }
+
+    if (costClass === "in" && savingsClass === "low"){
+      return {
+        tone: "good",
+        headline: "Solid replacement decision — savings may be modest, reliability improves.",
+        why: [
+          "Even with conservative savings, end-of-life replacements reduce breakdown risk.",
+          "Comfort, noise, and consistency can be meaningful benefits."
+        ],
+        qVisible: [
+          "What reliability/comfort improvements should we expect right away?",
+          "What maintenance will keep performance strong?"
+        ],
+        qMore: [
+          "Are there low-cost options that increase savings (controls, airflow)?",
+          "What’s the best value configuration you recommend?"
+        ]
+      };
+    }
+
+    if (costClass === "low" && (savingsClass === "in" || savingsClass === "low")){
+      return {
+        tone: "good",
+        headline: "Competitive quote — great sign if scope is complete.",
+        why: [
+          "Competitive bids happen and can be a win for the homeowner.",
+          "A quick scope check keeps expectations aligned."
+        ],
+        qVisible: [
+          "Can you walk me through what’s included in this price?",
+          "Are permits/inspections and commissioning included?"
+        ],
+        qMore: [
+          "Anything excluded homeowners often miss (thermostat, disposal, venting)?",
+          "Is there any scenario where price could change after work begins?"
+        ]
+      };
+    }
+
+    if (savingsClass === "highly_optimistic"){
+      return {
+        tone: "warn",
+        headline: "Savings are best-case — highly optimistic.",
+        why: [
+          "This level of savings can happen if the current system is in poor health (short-cycling, failing components, poor combustion/airflow).",
+          "It can also happen if current usage is unusually high (setpoints, runtime, comfort changes).",
+          "Treat this as a best-case scenario — real savings often land lower once real-world usage is factored in."
+        ],
+        qVisible: [
+          "How did you estimate savings — what baseline efficiency/condition did you assume for the current furnace?",
+          "Is the current system showing problems that would justify unusually high waste today?"
+        ],
+        qMore: [
+          "If the current system is actually operating ‘okay’, what’s the expected savings range?",
+          "Can you provide two savings estimates: typical scenario vs best-case scenario?"
+        ]
+      };
+    }
+
+    if (costClass === "unreal_low"){
+      return {
+        tone: "warn",
+        headline: "This price is extremely low — verify scope before scheduling.",
+        why: [
+          "Very low pricing can reflect partial scope or missing items.",
+          "Confirming scope protects everyone from surprises."
+        ],
+        qVisible: [
+          "Can you itemize what’s included (equipment, labor, permits)?",
+          "Is anything typically required being handled separately?"
+        ],
+        qMore: [
+          "What add-ons might be discovered during install (duct/electrical/access)?",
+          "Can we confirm final scope in writing?"
+        ]
+      };
+    }
+
+    return {
+      tone: "warn",
+      headline: "Looks promising — confirm scope and assumptions.",
+      why: [
+        "One or more inputs are outside typical expectations.",
+        "A quick review keeps the project on track and avoids surprises."
+      ],
+      qVisible: [
+        "What’s included in the quote and what might change?",
+        "What assumptions drive the savings estimate?"
+      ],
+      qMore: [
+        "Would an itemized quote help compare another option?",
+        "What’s the best value option you recommend?"
+      ]
+    };
+  }
+
+  // -------------------------
+  // DECISION METRICS
+  // -------------------------
+  function computeDecisionMetrics(installCost, monthlySavings){
+    const annualSavings = monthlySavings * 12;
+
+    const netLow = Math.max(0, installCost - INCENTIVES_HIGH);
+    const netHigh = Math.max(0, installCost - INCENTIVES_LOW);
+
+    let paybackLow = Infinity, paybackHigh = Infinity;
+    if (annualSavings > 0){
+      paybackLow = netLow / annualSavings;
+      paybackHigh = netHigh / annualSavings;
+    }
+
+    return { annualSavings, netLow, netHigh, paybackLow, paybackHigh };
+  }
+
+  function formatYearsRange(a, b){
+    if (!isFinite(a) || !isFinite(b)) return "—";
+    const lo = Math.max(0, Math.round(a));
+    const hi = Math.max(0, Math.round(b));
+    if (lo === hi) return `~${lo} yrs`;
+    return `~${lo}–${hi} yrs`;
+  }
+
+  // ROI (tight range; exact 80–110 only when both in-range)
+  function computeTightROIRange(costClass, savingsClass){
+    if (costClass === "in" && savingsClass === "in"){
+      return { low: 80, high: 110 };
+    }
+
+    let center = 75;
+
+    if (costClass === "low") center += 10;
+    if (costClass === "likely_over") center -= 10;
+    if (costClass === "over") center -= 25;
+    if (costClass === "unreal_low") center += 5;
+
+    if (savingsClass === "low") center -= 15;
+    if (savingsClass === "optimistic") center += 10;
+    // do NOT inflate for "highly_optimistic"
+
+    center = clamp(center, 10, 120);
+
+    let low = center - 15;
+    let high = center + 15;
+
+    low = clamp(low, 0, 150);
+    high = clamp(high, 0, 150);
+
+    if (high - low < 30){
+      if (low === 0) high = 30;
+      else if (high === 150) low = 120;
+      else {
+        low = clamp(center - 15, 0, 150);
+        high = clamp(low + 30, 0, 150);
+      }
+    }
+
+    return { low: Math.round(low), high: Math.round(high) };
+  }
+
+  // -------------------------
+  // RESET (with “haptic” feel)
+  // -------------------------
+  function nudgeAnim(el, cls){
+    if (!el) return;
+    el.classList.remove(cls);
+    // force reflow so animation can replay
+    void el.offsetWidth;
+    el.classList.add(cls);
+    setTimeout(() => el.classList.remove(cls), 320);
+  }
+
+  function thumbBounce(inputEl){
+    if (!inputEl) return;
+    inputEl.classList.remove("thumb-bounce");
+    void inputEl.offsetWidth;
+    inputEl.classList.add("thumb-bounce");
+    setTimeout(() => inputEl.classList.remove("thumb-bounce"), 260);
+  }
+
+  function resetSlidersToLeafMid(){
+    const midPrice = Math.round((LEAF_PRICE_MIN + LEAF_PRICE_MAX) / 2); // 6000
+    const dyn = dynamicSavingsRange(midPrice);
+    const midSavings = Math.round((dyn.min + dyn.max) / 2); // 27 for 19–35
+
+    // tiny “button press” feel
+    nudgeAnim(resetBtn, "reset-pop");
+
+    // Actual haptic on mobile (supported browsers)
+    if (navigator.vibrate) navigator.vibrate([10]);
+
+    priceSlider.value = midPrice;
+    savingsSlider.value = midSavings;
+
+    // Visual bounce on thumbs + subtle band pulse
+    thumbBounce(priceSlider);
+    thumbBounce(savingsSlider);
+    nudgeAnim(priceBandTrack, "band-pulse");
+    nudgeAnim(savingsBandTrack, "band-pulse");
+
+    updateUI();
+  }
+
+  resetBtn?.addEventListener("click", resetSlidersToLeafMid);
+
+  // -------------------------
+  // UI Update
+  // -------------------------
+  function updateUI(){
+    const price = Number(priceSlider.value);
+    const savings = Number(savingsSlider.value);
+
+    priceValue.textContent = formatMoney(price);
+    savingsValue.textContent = "$" + savings + "/mo";
+
+    // Dynamic savings baseline
+    const dyn = dynamicSavingsRange(price);
+    dynamicSavingsRangeLabel.textContent = `$${dyn.min}–$${dyn.max}/mo`;
+
+    // Labels
+    priceBandMinLabel.textContent = formatMoney(LEAF_PRICE_MIN);
+    priceBandMaxLabel.textContent = formatMoney(LEAF_PRICE_MAX);
+    savingsBandMinLabel.textContent = `$${dyn.min}/mo`;
+    savingsBandMaxLabel.textContent = `$${dyn.max}/mo`;
+
+    // Bands
+    setBand(priceBandOK, Number(priceSlider.min), Number(priceSlider.max), LEAF_PRICE_MIN, LEAF_PRICE_MAX);
+    setBand(savingsBandOK, Number(savingsSlider.min), Number(savingsSlider.max), dyn.min, dyn.max);
+
+    // Fill-to-thumb glow
+    setFill(priceBandFill, Number(priceSlider.min), Number(priceSlider.max), price);
+    setFill(savingsBandFill, Number(savingsSlider.min), Number(savingsSlider.max), savings);
+
+    // Cost badge
+    const costClass = classifyCost(price);
+    if (price < COST_UNREALISTIC_BELOW){
+      setBadge(costBadge, "bad", "Unrealistic");
+    } else if (price < LEAF_PRICE_MIN){
+      setBadge(costBadge, "warn", "Low (verify scope)");
+    } else if (price > COST_OVERPRICED_ABOVE){
+      setBadge(costBadge, "bad", "Overpriced");
+    } else if (price > LEAF_PRICE_MAX){
+      setBadge(costBadge, "warn", "Likely overpriced");
+    } else {
+      setBadge(costBadge, "good", "Within range");
+    }
+
+    // Savings badge (no "unrealistic" – becomes "Highly optimistic")
+    const savingsClass = classifySavings(savings, dyn.min, dyn.max);
+    const optimisticMax = dyn.max + SAVINGS_OPTIMISTIC_BUFFER;
+    const highlyOptimisticMax = dyn.max + SAVINGS_UNREALISTIC_BUFFER;
+
+    if (savings > highlyOptimisticMax){
+      setBadge(savingsBadge, "bad", "Highly optimistic (best case)");
+    } else if (savings > optimisticMax){
+      setBadge(savingsBadge, "warn", "Optimistic, possible");
+    } else if (savings < dyn.min){
+      setBadge(savingsBadge, "warn", "Conservative");
+    } else {
+      setBadge(savingsBadge, "good", "Within range");
+    }
+
+    // Main indicator: RED only when BOTH are "red"
+    const isCostRed = (costClass === "over"); // price > COST_OVERPRICED_ABOVE
+    const isSavingsRed = (savingsClass === "highly_optimistic");
+
+    const msg = quickReadMessage(costClass, savingsClass);
+
+    if (isCostRed && isSavingsRed){
+      setBadge(overallBadge, "bad", "Major caution 🚩");
+      overallHeadline.textContent = "This is high risk — expensive + best-case savings.";
+    } else if (msg.tone === "good"){
+      setBadge(overallBadge, "good", "Looks good ✅");
+      overallHeadline.textContent = msg.headline;
+    } else {
+      setBadge(overallBadge, "warn", "Proceed smart ⚠️");
+      overallHeadline.textContent = msg.headline;
+    }
+
+    // Render lists
+    const renderList = (el, items) => {
+      el.innerHTML = (items || []).map(t => `<li>${t}</li>`).join("");
+    };
+    renderList(quickReadWhy, msg.why);
+    renderList(quickReadQuestionsVisible, msg.qVisible);
+    renderList(quickReadQuestionsMore, msg.qMore);
+
+    // Decision metrics
+    msInstallCost.textContent = formatMoney(price);
+    msMonthlySavings.textContent = "$" + savings + "/mo";
+
+    const metrics = computeDecisionMetrics(price, savings);
+
+    const netMin = Math.min(metrics.netLow, metrics.netHigh);
+    const netMax = Math.max(metrics.netLow, metrics.netHigh);
+    msNetCostRange.textContent = formatMoneyRange(netMin, netMax);
+
+    msPaybackRange.textContent = formatYearsRange(metrics.paybackLow, metrics.paybackHigh);
+
+    const roi = computeTightROIRange(costClass, savingsClass);
+    msROIRange.textContent = `${roi.low}–${roi.high}%`;
+
+    // Decision badge + summary
+    if (isCostRed && isSavingsRed){
+      setBadge(decisionBadge, "bad", "Unclear 🚩");
+      msSummaryHeadline.textContent = "This needs a closer look.";
+      msSummaryText.textContent =
+        "The quote is very high and the savings are best-case. Get an itemized scope and compare at least one more bid.";
+    } else if (msg.tone === "good"){
+      setBadge(decisionBadge, "good", "Likely yes ✅");
+      msSummaryHeadline.textContent = "This looks financially reasonable.";
+      msSummaryText.textContent =
+        "If the contractor quote lands within the LEAF ranges, this is typically a strong replacement decision.";
+    } else {
+      setBadge(decisionBadge, "warn", "Likely yes (with clarity) ⚠️");
+      msSummaryHeadline.textContent = "This can still make sense — confirm a few details.";
+      msSummaryText.textContent =
+        "Use the questions above to confirm scope, assumptions, and incentives. If the final bid aligns with LEAF ranges, you’re in a good spot.";
+    }
+  }
+
+  priceSlider.addEventListener("input", updateUI);
+  savingsSlider.addEventListener("input", updateUI);
+  updateUI();
+</script>
+
 </body>
 </html>
+
