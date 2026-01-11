@@ -5,7 +5,6 @@
   <title>LEAF System Snapshot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     :root { --leaf:#43a419; }
     body{
@@ -20,8 +19,6 @@
     .pop{ transition: transform .18s ease; }
     .pop:hover{ transform: translateY(-1px) scale(1.01); }
     summary::-webkit-details-marker{ display:none; }
-
-    /* --- SLIDERS (single-track look) --- */
     input[type="range"]{
       -webkit-appearance: none;
       appearance: none;
@@ -65,9 +62,7 @@
       cursor: pointer;
       transform: translateZ(0);
     }
-
     .slider-wrap{ position: relative; padding-top: 6px; padding-bottom: 6px; }
-
     .range-band{
       position: absolute;
       left: 0; right: 0;
@@ -107,8 +102,6 @@
       z-index: 2;
       pointer-events: none;
     }
-
-    /* Non-interactive marker (static bar) */
     .range-band .marker{
       position: absolute;
       top: -6px;
@@ -131,7 +124,6 @@
       border: 2px solid rgba(0,0,0,.55);
       box-shadow: 0 10px 18px rgba(0,0,0,.40), 0 0 0 6px rgba(67,164,25,.10);
     }
-
     .band-label{
       font-size: 10px;
       color: rgba(255,255,255,.45);
@@ -139,43 +131,36 @@
       justify-content: space-between;
       margin-top: 6px;
     }
-
-    /* --- Reset feel --- */
     @keyframes softPop {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(0.96); }
+      0% { transform: scale(1); }
+      40% { transform: scale(0.96); }
       100% { transform: scale(1); }
     }
     @keyframes thumbBounce {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(0.90); }
+      0% { transform: scale(1); }
+      40% { transform: scale(0.90); }
       100% { transform: scale(1); }
     }
     @keyframes glowPulse {
-      0%   { box-shadow: 0 0 0 0 rgba(67,164,25,.00); }
-      50%  { box-shadow: 0 0 0 10px rgba(67,164,25,.14); }
+      0% { box-shadow: 0 0 0 0 rgba(67,164,25,.00); }
+      50% { box-shadow: 0 0 0 10px rgba(67,164,25,.14); }
       100% { box-shadow: 0 0 0 0 rgba(67,164,25,.00); }
     }
     .reset-pop { animation: softPop .22s ease; }
     .band-pulse { animation: glowPulse .28s ease; }
     input.thumb-bounce::-webkit-slider-thumb{ animation: thumbBounce .22s ease; }
     input.thumb-bounce::-moz-range-thumb{ animation: thumbBounce .22s ease; }
-
-    /* --- Swipe pages --- */
     .snap-scroll{
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .snap-scroll::-webkit-scrollbar{ display:none; }
-
     .snap-page{
       scroll-snap-align: center;
       width: 100%;
       flex: 0 0 100%;
     }
-
-    /* Pager dots */
     .dot{
       width: 8px; height: 8px;
       border-radius: 999px;
@@ -190,11 +175,8 @@
     }
   </style>
 </head>
-
 <body class="bg-black text-white">
 <div class="min-h-screen">
-
-  <!-- HEADER (Share/PDF removed, replaced with pager) -->
   <header class="sticky top-0 z-30 bg-black/70 border-b border-neutral-800 backdrop-blur">
     <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
       <div>
@@ -203,8 +185,6 @@
           <span id="pageLabel">Snapshot 1 of 3</span>
         </div>
       </div>
-
-      <!-- Pager dots -->
       <div class="flex items-center gap-2" id="pager">
         <button class="dot active" aria-label="Go to snapshot 1" data-page="0"></button>
         <button class="dot" aria-label="Go to snapshot 2" data-page="1"></button>
@@ -213,82 +193,57 @@
     </div>
   </header>
 
-  <!-- SWIPE CONTAINER -->
   <div id="pages" class="snap-scroll overflow-x-auto flex">
-    <!-- =========================
-         PAGE 1
-    ========================== -->
+    <!-- PAGE 1: Gas Furnace -->
     <div class="snap-page">
       <main class="leaf-page max-w-md mx-auto px-4 pt-5 pb-28 space-y-4">
-
-        <!-- HERO -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
-          <div class="text-lg font-extrabold tracking-tight mb-1" data-el="heroSystemTitle">
-            🔥 HVAC • Gas Furnace
-          </div>
-          <div class="text-sm font-semibold text-neutral-200" data-el="heroSystemSubtitle">
-            Direct-replacement gas furnace upgrade
-          </div>
-
-          <div class="text-xs text-neutral-300 mt-1">
-            LEAF provides ranges so you can evaluate contractor quotes with confidence.
-          </div>
-
+          <div class="text-lg font-extrabold tracking-tight mb-1" data-el="heroSystemTitle">🔥 HVAC • Gas Furnace</div>
+          <div class="text-sm font-semibold text-neutral-200" data-el="heroSystemSubtitle">Direct-replacement high-efficiency upgrade</div>
+          <div class="text-xs text-neutral-300 mt-1">LEAF provides ranges so you can evaluate contractor quotes with confidence.</div>
           <div class="flex flex-wrap gap-2 mt-3">
-            <span data-el="heroSavingsPill" class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">
-              Save ~$19–$35/mo
-            </span>
-            <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">
-              ~30–45% less CO₂
-            </span>
+            <span data-el="heroSavingsPill" class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">Save ~$22–$38/mo</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">~35–50% less CO₂</span>
           </div>
-
           <div class="text-[11px] text-neutral-400 mt-2">
             Note: higher-priced systems can increase savings slightly — but ROI can drop if the added cost doesn’t pay back over time.
           </div>
         </section>
 
-        <!-- CURRENT -->
         <section class="glass rounded-3xl p-4 border border-red-500/30 soft-shadow pop">
           <div class="flex justify-between mb-3">
             <div class="text-sm font-semibold">📷 Current system</div>
-            <span class="text-[11px] px-3 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">
-              Near end of life
-            </span>
+            <span class="text-[11px] px-3 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">Near end of life</span>
           </div>
           <div class="flex gap-3">
             <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
-              <img data-el="currentImg" src="" alt="Current system photo" class="w-full h-full object-cover" />
+              <img data-el="currentImg" src="https://media.istockphoto.com/id/528216623/photo/basement-old-heating.jpg?s=612x612&w=0&k=20&c=C2dbxazG_mm7dDHkhXAf02rKV3KfeA0B7UsmrEADcOM=" alt="Current system photo" class="w-full h-full object-cover" />
             </div>
             <div class="flex-1 text-xs space-y-1">
-              <div class="font-semibold">Existing gas furnace</div>
-              <div>Annual cost: <b>$350–$450</b></div>
-              <div>Carbon: <b>3,400–4,000 lbs/yr</b></div>
+              <div class="font-semibold">Existing gas furnace (80% AFUE)</div>
+              <div>Annual cost: <b>$380–$480</b></div>
+              <div>Carbon: <b>3,600–4,200 lbs/yr</b></div>
             </div>
           </div>
         </section>
 
-        <!-- RECOMMENDED -->
         <section class="glass rounded-3xl p-4 border border-[var(--leaf)]/35 soft-shadow pop">
           <div class="flex justify-between mb-3">
             <div class="text-sm font-semibold">✨ Recommended upgrade</div>
-            <span class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
-              High efficiency
-            </span>
+            <span class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">High efficiency</span>
           </div>
           <div class="flex gap-3">
             <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
-             <img data-el="upgradeImg" src="" alt="Recommended upgrade photo" class="w-full h-full object-cover" /> 
+              <img data-el="upgradeImg" src="https://images.carriercms.com/image/upload/v1720013742/carrier/residential-hvac/people/dealer-inspecting-carrier-gas-furnaces-installed-in-a-garage.jpg" alt="Recommended upgrade photo" class="w-full h-full object-cover" />
             </div>
             <div class="flex-1 text-xs space-y-1">
-              <div class="font-semibold" data-el="recommendedName">High-efficiency gas furnace</div>
-              <div>Estimated yearly savings: <b>$170–$260</b></div>
-              <div>Carbon: <b>1,600–2,400 lbs/yr</b></div>
+              <div class="font-semibold" data-el="recommendedName">High-efficiency gas furnace (96-98% AFUE)</div>
+              <div>Estimated yearly savings: <b>$190–$280</b></div>
+              <div>Carbon: <b>1,500–2,200 lbs/yr</b></div>
             </div>
           </div>
         </section>
 
-        <!-- COST & SAVINGS RANGE -->
         <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <summary class="cursor-pointer">
             <div class="flex justify-between items-center">
@@ -298,24 +253,21 @@
             <div class="grid grid-cols-2 gap-2 text-xs mt-3">
               <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
                 <div class="text-neutral-400">Install cost</div>
-                <div class="text-lg font-bold" data-el="leafInstallRangeBox">$5,000–$7,000</div>
+                <div class="text-lg font-bold" data-el="leafInstallRangeBox">$5,200–$7,800</div>
               </div>
               <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
                 <div class="text-neutral-400">Monthly savings</div>
-                <div class="text-lg font-bold" data-el="summarySavingsRange">$19–$35</div>
+                <div class="text-lg font-bold" data-el="summarySavingsRange">$22–$38</div>
               </div>
             </div>
           </summary>
-
           <div class="mt-4 text-xs space-y-3">
             <div class="font-semibold">Cost bar (non-interactive)</div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="flex items-center justify-between">
                 <div class="text-xs text-neutral-400">Your selected price</div>
-                <div class="text-sm font-bold" data-el="staticPriceValue">$6,000</div>
+                <div class="text-sm font-bold" data-el="staticPriceValue">$6,500</div>
               </div>
-
               <div class="mt-3 slider-wrap" style="padding-top:14px; padding-bottom:10px;">
                 <div class="range-band" aria-hidden="true" data-el="staticCostTrack">
                   <div data-el="staticCostFill" class="fill"></div>
@@ -323,16 +275,14 @@
                   <div data-el="staticCostMarker" class="marker" style="left:0%;"></div>
                 </div>
                 <div class="band-label">
-                  <span data-el="staticCostMinLabel">$5,000</span>
-                  <span data-el="staticCostMaxLabel">$7,000</span>
+                  <span data-el="staticCostMinLabel">$5,200</span>
+                  <span data-el="staticCostMaxLabel">$7,800</span>
                 </div>
               </div>
-
               <div class="mt-2 text-[11px] text-neutral-400">
                 LEAF range is highlighted. The marker shows your selected quote.
               </div>
             </div>
-
             <div class="font-semibold">Why it’s a range</div>
             <ul class="list-disc list-inside text-neutral-300 space-y-1">
               <li>Based on similar installs in comparable homes</li>
@@ -343,7 +293,6 @@
           </div>
         </details>
 
-        <!-- INTERACTIVE COST SLIDER + QUICK READ -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <div class="flex items-start justify-between gap-3">
             <div>
@@ -352,19 +301,15 @@
                 Slide the price. Savings bumps slightly with higher system cost — but ROI can drop if price rises faster than savings.
               </div>
             </div>
-
             <div class="flex items-center gap-2">
               <button data-el="resetBtn" class="text-[11px] px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 pop">
                 Reset
               </button>
-
-              <!-- square badge -->
               <span data-el="overallBadge" class="text-[11px] px-3 py-1 rounded-md bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
                 Looks good ✅
               </span>
             </div>
           </div>
-
           <div class="mt-4 rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
             <div class="flex items-center justify-between">
               <div class="text-xs text-neutral-400">Contractor price</div>
@@ -372,50 +317,43 @@
                 <span data-el="costBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
                   Within range
                 </span>
-                <div class="text-sm font-bold" data-el="priceValue">$6,000</div>
+                <div class="text-sm font-bold" data-el="priceValue">$6,500</div>
               </div>
             </div>
-
             <div class="mt-3 slider-wrap">
               <div class="range-band" aria-hidden="true" data-el="priceBandTrack">
                 <div data-el="priceBandFill" class="fill"></div>
                 <div data-el="priceBandOK" class="ok"></div>
               </div>
-              <input data-el="priceSlider" type="range" min="3000" max="15000" step="100" value="6000" />
+              <input data-el="priceSlider" type="range" min="3200" max="14000" step="100" value="6500" />
               <div class="band-label">
-                <span data-el="priceBandMinLabel">$5,000</span>
-                <span data-el="priceBandMaxLabel">$7,000</span>
+                <span data-el="priceBandMinLabel">$5,200</span>
+                <span data-el="priceBandMaxLabel">$7,800</span>
               </div>
             </div>
-
             <div class="mt-2 text-[11px] text-neutral-400">
-              LEAF price range: <b data-el="leafInstallRangeInline">$5,000–$7,000</b>
+              LEAF price range: <b data-el="leafInstallRangeInline">$5,200–$7,800</b>
             </div>
             <div class="mt-2 text-[11px] text-neutral-400">
-              Estimated savings at this price: <b data-el="dynamicSavingsRange">$19–$35/mo</b>
+              Estimated savings at this price: <b data-el="dynamicSavingsRange">$22–$38/mo</b>
             </div>
           </div>
-
           <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
             <div class="text-xs text-neutral-400">Quick read</div>
             <div class="text-sm font-semibold mt-1" data-el="overallHeadline">This looks like a solid deal.</div>
-
             <div class="mt-2 text-[11px] text-neutral-300">
               <div class="font-semibold text-neutral-200">Good questions to ask the contractor</div>
               <ul data-el="quickReadQuestionsVisible" class="list-disc list-inside mt-1 space-y-1"></ul>
             </div>
-
             <details class="mt-2">
               <summary class="cursor-pointer text-[11px] text-emerald-300">
                 Why this message + more questions
               </summary>
-
               <div class="mt-2 text-[11px] text-neutral-300 space-y-3">
                 <div>
                   <div class="font-semibold text-neutral-200">Why LEAF is saying this</div>
                   <ul data-el="quickReadWhy" class="list-disc list-inside mt-1 space-y-1"></ul>
                 </div>
-
                 <div>
                   <div class="font-semibold text-neutral-200">More questions (optional)</div>
                   <ul data-el="quickReadQuestionsMore" class="list-disc list-inside mt-1 space-y-1"></ul>
@@ -425,58 +363,35 @@
           </div>
         </section>
 
-        <!-- INCENTIVES -->
         <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <summary class="cursor-pointer">
             <div class="flex justify-between items-center">
               <div class="text-sm font-semibold">🏷️ Incentives & rebates</div>
               <span class="text-[11px] text-neutral-400">Tap for details</span>
             </div>
-            <div class="mt-2 text-xs font-bold" data-el="incentivesSummary">$750–$3,000+ typical</div>
+            <div class="mt-2 text-xs font-bold" data-el="incentivesSummary">$600–$3,200+ typical</div>
             <div class="text-[11px] text-neutral-400 mt-1">Federal • State • Utility</div>
           </summary>
-
           <div class="mt-4 space-y-3 text-xs">
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="font-semibold">🇺🇸 Federal</div>
-              <div>Tax credit example: <b>20–30%</b> up to <b>$600–$2,000</b></div>
+              <div>Tax credit example: <b>30%</b> up to <b>$2,000</b></div>
               <div class="text-[11px] text-neutral-400 mt-1">Claimed by homeowner when filing taxes.</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="font-semibold">🏛️ State</div>
-              <div>Program rebates often <b>$500–$1,500</b> (varies by state & funding)</div>
-              <div class="text-[11px] text-neutral-400 mt-1">Eligibility can depend on equipment + participating contractors.</div>
+              <div>Program rebates often <b>$500–$1,500</b></div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="font-semibold">⚡ Local / Utility</div>
-              <div>Flat rebates typically <b>$250–$750</b></div>
-              <div class="text-[11px] text-neutral-400 mt-1">Often applied at install or submitted after completion.</div>
+              <div>Flat rebates typically <b>$200–$800</b></div>
             </div>
-
-            <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
-              <div class="font-semibold">🔗 Helpful links</div>
-              <div class="mt-2 flex flex-col gap-2">
-                <a href="https://www.irs.gov/pub/irs-pdf/f5695.pdf" target="_blank"
-                  class="text-emerald-300 underline text-[11px]">
-                  IRS Form 5695 (PDF)
-                </a>
-                <a href="https://www.energystar.gov/rebate-finder" target="_blank"
-                  class="text-emerald-300 underline text-[11px]">
-                  ENERGY STAR Rebate Finder
-                </a>
-              </div>
-            </div>
-
-            <div class="text-[11px] text-neutral-400">
-              LEAF identifies likely incentives based on system type and location. Contractors confirm eligibility,
-              pricing, and paperwork requirements.
+            <div class="text-[11px] text-neutral-400 mt-2">
+              LEAF identifies likely incentives based on system type and location. Contractors confirm eligibility.
             </div>
           </div>
         </details>
 
-        <!-- DOES THIS MAKE SENSE? -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <div class="flex items-center justify-between">
             <div class="text-sm font-semibold">🧠 Does this decision make sense?</div>
@@ -484,27 +399,23 @@
               Likely yes ✅
             </span>
           </div>
-
           <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Install cost (slider)</div>
-              <div class="text-base font-bold" data-el="msInstallCost">$6,000</div>
+              <div class="text-base font-bold" data-el="msInstallCost">$6,500</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Estimated savings (at this price)</div>
-              <div class="text-base font-bold" data-el="msSavingsRange">$19–$35/mo</div>
+              <div class="text-base font-bold" data-el="msSavingsRange">$22–$38/mo</div>
               <div class="text-[11px] text-neutral-400 mt-1">Higher cost can bump savings slightly, but ROI may drop.</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 col-span-2">
               <div class="text-neutral-400">Estimated net cost (after incentives)</div>
-              <div class="text-base font-bold" data-el="msNetCostRange">$3,500–$4,500</div>
+              <div class="text-base font-bold" data-el="msNetCostRange">$3,300–$5,900</div>
               <div class="text-[11px] text-neutral-400 mt-1">
                 Based on incentive estimates shown above (contractor confirms final eligibility).
               </div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Quote value check</div>
               <div class="text-base font-bold" data-el="msValueCheck">Within range ✅</div>
@@ -516,7 +427,6 @@
               </div>
             </div>
           </div>
-
           <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
             <div class="text-xs text-neutral-400">Decision summary</div>
             <div class="text-sm font-semibold mt-1" data-el="msSummaryHeadline">This looks financially reasonable.</div>
@@ -525,83 +435,59 @@
             </div>
           </div>
         </section>
-
       </main>
     </div>
 
-    <!-- =========================
-         PAGE 2 (replicated content)
-    ========================== -->
+    <!-- PAGE 2: Water Heater -->
     <div class="snap-page">
       <main class="leaf-page max-w-md mx-auto px-4 pt-5 pb-28 space-y-4">
-
-        <!-- HERO -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
-          <div class="text-lg font-extrabold tracking-tight mb-1" data-el="heroSystemTitle">
-            🔥 HVAC • Gas Furnace
-          </div>
-          <div class="text-sm font-semibold text-neutral-200" data-el="heroSystemSubtitle">
-            Direct-replacement gas furnace upgrade
-          </div>
-
-          <div class="text-xs text-neutral-300 mt-1">
-            LEAF provides ranges so you can evaluate contractor quotes with confidence.
-          </div>
-
+          <div class="text-lg font-extrabold tracking-tight mb-1" data-el="heroSystemTitle">💧 Water Heater • Gas Tank</div>
+          <div class="text-sm font-semibold text-neutral-200" data-el="heroSystemSubtitle">High-efficiency replacement</div>
+          <div class="text-xs text-neutral-300 mt-1">LEAF provides ranges so you can evaluate contractor quotes with confidence.</div>
           <div class="flex flex-wrap gap-2 mt-3">
-            <span data-el="heroSavingsPill" class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">
-              Save ~$19–$35/mo
-            </span>
-            <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">
-              ~30–45% less CO₂
-            </span>
+            <span data-el="heroSavingsPill" class="px-3 py-1 rounded-full bg-[var(--leaf)] text-black text-xs font-semibold">Save ~$9–$17/mo</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 text-xs border border-emerald-500/30">~30–45% less energy</span>
           </div>
-
           <div class="text-[11px] text-neutral-400 mt-2">
-            Note: higher-priced systems can increase savings slightly — but ROI can drop if the added cost doesn’t pay back over time.
+            Note: condensing models save more but may need venting upgrades.
           </div>
         </section>
 
-        <!-- CURRENT -->
         <section class="glass rounded-3xl p-4 border border-red-500/30 soft-shadow pop">
           <div class="flex justify-between mb-3">
             <div class="text-sm font-semibold">📷 Current system</div>
-            <span class="text-[11px] px-3 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">
-              Near end of life
-            </span>
+            <span class="text-[11px] px-3 py-1 rounded-full bg-red-500/15 text-red-200 border border-red-500/25">Inefficient / aging</span>
           </div>
           <div class="flex gap-3">
             <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
-             <img data-el="currentImg" src="" alt="Current system photo" class="w-full h-full object-cover" />
+              <img data-el="currentImg" src="https://apollohome.com/wp-content/uploads/2021/05/shutterstock_1209129.jpg" alt="Current system photo" class="w-full h-full object-cover" />
+            </div>
             <div class="flex-1 text-xs space-y-1">
-              <div class="font-semibold">Existing gas furnace</div>
-              <div>Annual cost: <b>$350–$450</b></div>
-              <div>Carbon: <b>3,400–4,000 lbs/yr</b></div>
+              <div class="font-semibold">Standard gas tank water heater</div>
+              <div>Annual cost: <b>$340–$430</b></div>
+              <div>Carbon: <b>2,900–3,600 lbs/yr</b></div>
             </div>
           </div>
         </section>
 
-        <!-- RECOMMENDED -->
         <section class="glass rounded-3xl p-4 border border-[var(--leaf)]/35 soft-shadow pop">
           <div class="flex justify-between mb-3">
             <div class="text-sm font-semibold">✨ Recommended upgrade</div>
-            <span class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
-              High efficiency
-            </span>
+            <span class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">High efficiency</span>
           </div>
           <div class="flex gap-3">
             <div class="w-24 h-24 rounded-3xl overflow-hidden border border-neutral-800">
-                <img data-el="upgradeImg" src="" alt="Recommended upgrade photo" class="w-full h-full object-cover" />
+              <img data-el="upgradeImg" src="https://images.bannerbear.com/direct/4mGpW3zwpg0ZK0AxQw/requests/000/110/501/287/VJqEKwxkyzGDBwG46NP8dj4vL/78e8668d28513a260a8ea7ca5242d3e568973607.jpg" alt="Recommended upgrade photo" class="w-full h-full object-cover" />
             </div>
             <div class="flex-1 text-xs space-y-1">
-              <div class="font-semibold" data-el="recommendedName">High-efficiency gas furnace</div>
-              <div>Estimated yearly savings: <b>$170–$260</b></div>
-              <div>Carbon: <b>1,600–2,400 lbs/yr</b></div>
+              <div class="font-semibold" data-el="recommendedName">High-efficiency condensing gas tank</div>
+              <div>Estimated yearly savings: <b>$110–$200</b></div>
+              <div>Carbon: <b>1,800–2,500 lbs/yr</b></div>
             </div>
           </div>
         </section>
 
-        <!-- COST & SAVINGS RANGE -->
         <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <summary class="cursor-pointer">
             <div class="flex justify-between items-center">
@@ -611,24 +497,21 @@
             <div class="grid grid-cols-2 gap-2 text-xs mt-3">
               <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
                 <div class="text-neutral-400">Install cost</div>
-                <div class="text-lg font-bold" data-el="leafInstallRangeBox">$5,000–$7,000</div>
+                <div class="text-lg font-bold" data-el="leafInstallRangeBox">$2,400–$4,100</div>
               </div>
               <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
                 <div class="text-neutral-400">Monthly savings</div>
-                <div class="text-lg font-bold" data-el="summarySavingsRange">$19–$35</div>
+                <div class="text-lg font-bold" data-el="summarySavingsRange">$9–$17</div>
               </div>
             </div>
           </summary>
-
           <div class="mt-4 text-xs space-y-3">
             <div class="font-semibold">Cost bar (non-interactive)</div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="flex items-center justify-between">
                 <div class="text-xs text-neutral-400">Your selected price</div>
-                <div class="text-sm font-bold" data-el="staticPriceValue">$6,000</div>
+                <div class="text-sm font-bold" data-el="staticPriceValue">$3,250</div>
               </div>
-
               <div class="mt-3 slider-wrap" style="padding-top:14px; padding-bottom:10px;">
                 <div class="range-band" aria-hidden="true" data-el="staticCostTrack">
                   <div data-el="staticCostFill" class="fill"></div>
@@ -636,27 +519,24 @@
                   <div data-el="staticCostMarker" class="marker" style="left:0%;"></div>
                 </div>
                 <div class="band-label">
-                  <span data-el="staticCostMinLabel">$5,000</span>
-                  <span data-el="staticCostMaxLabel">$7,000</span>
+                  <span data-el="staticCostMinLabel">$2,400</span>
+                  <span data-el="staticCostMaxLabel">$4,100</span>
                 </div>
               </div>
-
               <div class="mt-2 text-[11px] text-neutral-400">
                 LEAF range is highlighted. The marker shows your selected quote.
               </div>
             </div>
-
             <div class="font-semibold">Why it’s a range</div>
             <ul class="list-disc list-inside text-neutral-300 space-y-1">
               <li>Based on similar installs in comparable homes</li>
               <li>Accounts for typical labor, permits, and equipment size</li>
               <li>Premium options can slightly increase savings, but ROI may drop if cost climbs faster than savings</li>
-              <li>Final scope can change due to ductwork/access/electrical needs</li>
+              <li>Final scope can change due to venting/electrical needs</li>
             </ul>
           </div>
         </details>
 
-        <!-- INTERACTIVE COST SLIDER + QUICK READ -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <div class="flex items-start justify-between gap-3">
             <div>
@@ -665,19 +545,15 @@
                 Slide the price. Savings bumps slightly with higher system cost — but ROI can drop if price rises faster than savings.
               </div>
             </div>
-
             <div class="flex items-center gap-2">
               <button data-el="resetBtn" class="text-[11px] px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 pop">
                 Reset
               </button>
-
-              <!-- square badge -->
               <span data-el="overallBadge" class="text-[11px] px-3 py-1 rounded-md bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
                 Looks good ✅
               </span>
             </div>
           </div>
-
           <div class="mt-4 rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
             <div class="flex items-center justify-between">
               <div class="text-xs text-neutral-400">Contractor price</div>
@@ -685,50 +561,43 @@
                 <span data-el="costBadge" class="text-[11px] px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-200 border border-emerald-500/30">
                   Within range
                 </span>
-                <div class="text-sm font-bold" data-el="priceValue">$6,000</div>
+                <div class="text-sm font-bold" data-el="priceValue">$3,250</div>
               </div>
             </div>
-
             <div class="mt-3 slider-wrap">
               <div class="range-band" aria-hidden="true" data-el="priceBandTrack">
                 <div data-el="priceBandFill" class="fill"></div>
                 <div data-el="priceBandOK" class="ok"></div>
               </div>
-              <input data-el="priceSlider" type="range" min="3000" max="15000" step="100" value="6000" />
+              <input data-el="priceSlider" type="range" min="1400" max="8000" step="100" value="3250" />
               <div class="band-label">
-                <span data-el="priceBandMinLabel">$5,000</span>
-                <span data-el="priceBandMaxLabel">$7,000</span>
+                <span data-el="priceBandMinLabel">$2,400</span>
+                <span data-el="priceBandMaxLabel">$4,100</span>
               </div>
             </div>
-
             <div class="mt-2 text-[11px] text-neutral-400">
-              LEAF price range: <b data-el="leafInstallRangeInline">$5,000–$7,000</b>
+              LEAF price range: <b data-el="leafInstallRangeInline">$2,400–$4,100</b>
             </div>
             <div class="mt-2 text-[11px] text-neutral-400">
-              Estimated savings at this price: <b data-el="dynamicSavingsRange">$19–$35/mo</b>
+              Estimated savings at this price: <b data-el="dynamicSavingsRange">$9–$17/mo</b>
             </div>
           </div>
-
           <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
             <div class="text-xs text-neutral-400">Quick read</div>
             <div class="text-sm font-semibold mt-1" data-el="overallHeadline">This looks like a solid deal.</div>
-
             <div class="mt-2 text-[11px] text-neutral-300">
               <div class="font-semibold text-neutral-200">Good questions to ask the contractor</div>
               <ul data-el="quickReadQuestionsVisible" class="list-disc list-inside mt-1 space-y-1"></ul>
             </div>
-
             <details class="mt-2">
               <summary class="cursor-pointer text-[11px] text-emerald-300">
                 Why this message + more questions
               </summary>
-
               <div class="mt-2 text-[11px] text-neutral-300 space-y-3">
                 <div>
                   <div class="font-semibold text-neutral-200">Why LEAF is saying this</div>
                   <ul data-el="quickReadWhy" class="list-disc list-inside mt-1 space-y-1"></ul>
                 </div>
-
                 <div>
                   <div class="font-semibold text-neutral-200">More questions (optional)</div>
                   <ul data-el="quickReadQuestionsMore" class="list-disc list-inside mt-1 space-y-1"></ul>
@@ -738,58 +607,30 @@
           </div>
         </section>
 
-        <!-- INCENTIVES -->
         <details class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <summary class="cursor-pointer">
             <div class="flex justify-between items-center">
               <div class="text-sm font-semibold">🏷️ Incentives & rebates</div>
               <span class="text-[11px] text-neutral-400">Tap for details</span>
             </div>
-            <div class="mt-2 text-xs font-bold" data-el="incentivesSummary">$750–$3,000+ typical</div>
+            <div class="mt-2 text-xs font-bold" data-el="incentivesSummary">$400–$1,400 typical</div>
             <div class="text-[11px] text-neutral-400 mt-1">Federal • State • Utility</div>
           </summary>
-
           <div class="mt-4 space-y-3 text-xs">
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="font-semibold">🇺🇸 Federal</div>
-              <div>Tax credit example: <b>20–30%</b> up to <b>$600–$2,000</b></div>
-              <div class="text-[11px] text-neutral-400 mt-1">Claimed by homeowner when filing taxes.</div>
+              <div>Tax credit example: <b>30%</b> up to <b>$600</b></div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="font-semibold">🏛️ State</div>
-              <div>Program rebates often <b>$500–$1,500</b> (varies by state & funding)</div>
-              <div class="text-[11px] text-neutral-400 mt-1">Eligibility can depend on equipment + participating contractors.</div>
+              <div>Program rebates often <b>$300–$800</b></div>
             </div>
-
-            <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
-              <div class="font-semibold">⚡ Local / Utility</div>
-              <div>Flat rebates typically <b>$250–$750</b></div>
-              <div class="text-[11px] text-neutral-400 mt-1">Often applied at install or submitted after completion.</div>
-            </div>
-
-            <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
-              <div class="font-semibold">🔗 Helpful links</div>
-              <div class="mt-2 flex flex-col gap-2">
-                <a href="https://www.irs.gov/pub/irs-pdf/f5695.pdf" target="_blank"
-                  class="text-emerald-300 underline text-[11px]">
-                  IRS Form 5695 (PDF)
-                </a>
-                <a href="https://www.energystar.gov/rebate-finder" target="_blank"
-                  class="text-emerald-300 underline text-[11px]">
-                  ENERGY STAR Rebate Finder
-                </a>
-              </div>
-            </div>
-
-            <div class="text-[11px] text-neutral-400">
-              LEAF identifies likely incentives based on system type and location. Contractors confirm eligibility,
-              pricing, and paperwork requirements.
+            <div class="text-[11px] text-neutral-400 mt-2">
+              LEAF identifies likely incentives based on system type and location. Contractors confirm eligibility.
             </div>
           </div>
         </details>
 
-        <!-- DOES THIS MAKE SENSE? -->
         <section class="glass rounded-3xl p-4 border border-neutral-800 soft-shadow pop">
           <div class="flex items-center justify-between">
             <div class="text-sm font-semibold">🧠 Does this decision make sense?</div>
@@ -797,27 +638,19 @@
               Likely yes ✅
             </span>
           </div>
-
           <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Install cost (slider)</div>
-              <div class="text-base font-bold" data-el="msInstallCost">$6,000</div>
+              <div class="text-base font-bold" data-el="msInstallCost">$3,250</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Estimated savings (at this price)</div>
-              <div class="text-base font-bold" data-el="msSavingsRange">$19–$35/mo</div>
-              <div class="text-[11px] text-neutral-400 mt-1">Higher cost can bump savings slightly, but ROI may drop.</div>
+              <div class="text-base font-bold" data-el="msSavingsRange">$9–$17/mo</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 col-span-2">
               <div class="text-neutral-400">Estimated net cost (after incentives)</div>
-              <div class="text-base font-bold" data-el="msNetCostRange">$3,500–$4,500</div>
-              <div class="text-[11px] text-neutral-400 mt-1">
-                Based on incentive estimates shown above (contractor confirms final eligibility).
-              </div>
+              <div class="text-base font-bold" data-el="msNetCostRange">$1,850–$2,850</div>
             </div>
-
             <div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3">
               <div class="text-neutral-400">Quote value check</div>
               <div class="text-base font-bold" data-el="msValueCheck">Within range ✅</div>
@@ -829,7 +662,6 @@
               </div>
             </div>
           </div>
-
           <div class="mt-3 rounded-2xl bg-black/30 border border-neutral-800 p-3">
             <div class="text-xs text-neutral-400">Decision summary</div>
             <div class="text-sm font-semibold mt-1" data-el="msSummaryHeadline">This looks financially reasonable.</div>
@@ -838,19 +670,15 @@
             </div>
           </div>
         </section>
-
       </main>
     </div>
 
-    <!-- =========================
-         PAGE 3 (empty, will clone page 2 via JS)
-    ========================== -->
+    <!-- PAGE 3: Windows (cloned & customized via JS) -->
     <div class="snap-page">
       <main class="leaf-page max-w-md mx-auto px-4 pt-5 pb-28 space-y-4"></main>
     </div>
   </div>
 
-  <!-- CTA -->
   <div class="fixed bottom-0 inset-x-0 bg-black/80 border-t border-neutral-800 backdrop-blur">
     <div class="max-w-md mx-auto px-4 py-3">
       <button class="w-full bg-[var(--leaf)] text-black font-semibold py-3 rounded-full text-sm pop">
@@ -861,13 +689,9 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
-  // =========================
-  // GLOBAL (pager)
-  // =========================
   const pagesEl = document.getElementById("pages");
   const pagerEl = document.getElementById("pager");
   const dots = Array.from(pagerEl.querySelectorAll(".dot"));
@@ -886,8 +710,7 @@
 
   pagerEl.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-page]");
-    if (!btn) return;
-    scrollToPage(Number(btn.dataset.page));
+    if (btn) scrollToPage(Number(btn.dataset.page));
   });
 
   pagesEl.addEventListener("scroll", () => {
@@ -896,61 +719,48 @@
     setActiveDot(Math.max(0, Math.min(dots.length - 1, i)));
   });
 
-  // =========================
-  // SNAPSHOT CONFIG (per page)
-  // =========================
- const SNAPSHOTS = [
-  {
-    systemTitle: "🔥 HVAC • Gas Furnace",
-    systemSubtitle: "Direct-replacement gas furnace upgrade",
-    recommendedName: "High-efficiency gas furnace",
+  const SNAPSHOTS = [
+    {
+      systemTitle: "🔥 HVAC • Gas Furnace",
+      systemSubtitle: "Direct-replacement high-efficiency upgrade",
+      recommendedName: "High-efficiency gas furnace (96-98% AFUE)",
+      currentImg: "https://media.istockphoto.com/id/528216623/photo/basement-old-heating.jpg?s=612x612&w=0&k=20&c=C2dbxazG_mm7dDHkhXAf02rKV3KfeA0B7UsmrEADcOM=",
+      upgradeImg: "https://images.carriercms.com/image/upload/v1720013742/carrier/residential-hvac/people/dealer-inspecting-carrier-gas-furnaces-installed-in-a-garage.jpg",
+      leafPriceMin: 5200,
+      leafPriceMax: 7800,
+      baseSavingsMin: 22,
+      baseSavingsMax: 38,
+      incentivesLow: 600,
+      incentivesHigh: 3200
+    },
+    {
+      systemTitle: "💧 Water Heater • Gas Tank",
+      systemSubtitle: "High-efficiency replacement",
+      recommendedName: "High-efficiency condensing gas tank",
+      currentImg: "https://apollohome.com/wp-content/uploads/2021/05/shutterstock_1209129.jpg",
+      upgradeImg: "https://images.bannerbear.com/direct/4mGpW3zwpg0ZK0AxQw/requests/000/110/501/287/VJqEKwxkyzGDBwG46NP8dj4vL/78e8668d28513a260a8ea7ca5242d3e568973607.jpg",
+      leafPriceMin: 2400,
+      leafPriceMax: 4100,
+      baseSavingsMin: 9,
+      baseSavingsMax: 17,
+      incentivesLow: 400,
+      incentivesHigh: 1400
+    },
+    {
+      systemTitle: "🪟 Windows • Mixed (8–12 units)",
+      systemSubtitle: "Upgrade to ENERGY STAR certified",
+      recommendedName: "Double/triple-pane low-E windows",
+      currentImg: "https://www.thespruce.com/thmb/TvglDlWl7bqL4X1BV6sWtZyycfM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/fogged-windows-repair-options-1822911-01-d133aa4013d9415693f696361a418d89.jpg",
+      upgradeImg: "https://www.keystonewindow.com/wp-content/uploads/2024/04/double-vs-triple-pane-windows-cost-benefits-img-2-min-1024x683.jpg",
+      leafPriceMin: 11000,
+      leafPriceMax: 20500,
+      baseSavingsMin: 30,
+      baseSavingsMax: 62,
+      incentivesLow: 0,
+      incentivesHigh: 2800
+    }
+  ];
 
-    currentImg: "old-furnace.png",
-    upgradeImg: "new-furnace.png",
-
-    leafPriceMin: 5000,
-    leafPriceMax: 7000,
-    baseSavingsMin: 19,
-    baseSavingsMax: 35,
-    incentivesLow: 750,
-    incentivesHigh: 3000
-  },
-  {
-    systemTitle: "💧 Water Heater • Gas Tank",
-    systemSubtitle: "High-efficiency replacement water heater",
-    recommendedName: "High-efficiency gas water heater",
-
-    currentImg: "old-water-heater.png",
-    upgradeImg: "new-water-heater.png",
-
-    leafPriceMin: 1800,
-    leafPriceMax: 3200,
-    baseSavingsMin: 6,
-    baseSavingsMax: 14,
-    incentivesLow: 0,
-    incentivesHigh: 800
-  },
-  {
-    systemTitle: "🪟 Windows • Mixed",
-    systemSubtitle: "Upgrade to high-performance windows",
-    recommendedName: "High-performance window package",
-
-    currentImg: "old-windows.png",
-    upgradeImg: "new-windows.png",
-
-    leafPriceMin: 12000,
-    leafPriceMax: 22000,
-    baseSavingsMin: 25,
-    baseSavingsMax: 55,
-    incentivesLow: 0,
-    incentivesHigh: 600
-  }
-];
-
-
-  // =========================
-  // LEAF LOGIC (per page)
-  // =========================
   const formatMoney = (n) => "$" + Math.round(n).toLocaleString("en-US");
   const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
@@ -958,7 +768,7 @@
     const tones = {
       good: "bg-emerald-500/15 text-emerald-200 border border-emerald-500/30",
       warn: "bg-yellow-500/15 text-yellow-200 border border-yellow-500/30",
-      bad:  "bg-red-500/15 text-red-200 border border-red-500/25",
+      bad: "bg-red-500/15 text-red-200 border border-red-500/25",
       neutral: "bg-neutral-800/60 text-neutral-200 border border-neutral-700"
     };
     const isSquare = el.classList.contains("rounded-md");
@@ -1014,48 +824,102 @@
 
   function initLeafPage(root, pageIndex){
     const snap = SNAPSHOTS[pageIndex] || SNAPSHOTS[0];
-
-    // per-page constants
     const LEAF_PRICE_MIN = snap.leafPriceMin;
     const LEAF_PRICE_MAX = snap.leafPriceMax;
-
     const BASE_SAVINGS_MIN = snap.baseSavingsMin;
     const BASE_SAVINGS_MAX = snap.baseSavingsMax;
-
-    const INCENTIVES_LOW  = snap.incentivesLow;
+    const INCENTIVES_LOW = snap.incentivesLow;
     const INCENTIVES_HIGH = snap.incentivesHigh;
 
-    const COST_UNREALISTIC_BELOW = LEAF_PRICE_MIN - 500;
-    const COST_OVERPRICED_ABOVE  = LEAF_PRICE_MAX + 3000;
-
-    // helpers that depend on per-page constants
     function dynamicSavingsRange(price){
       const over = Math.max(0, price - LEAF_PRICE_MAX);
       const steps = Math.floor(over / 1000);
-      const bump = steps * 2; // +$2/mo per $1k above max
+      const bump = steps * 2;
       return { min: BASE_SAVINGS_MIN + bump, max: BASE_SAVINGS_MAX + bump };
     }
 
     function classifyCost(price){
+      const COST_UNREALISTIC_BELOW = LEAF_PRICE_MIN - 500;
+      const COST_OVERPRICED_ABOVE = LEAF_PRICE_MAX + 3000;
       if (price < COST_UNREALISTIC_BELOW) return "unreal_low";
       if (price < LEAF_PRICE_MIN) return "low";
       if (price > COST_OVERPRICED_ABOVE) return "over";
       if (price > LEAF_PRICE_MAX) return "likely_over";
       return "in";
     }
-// Set per-snapshot photos
-const currentImgEl = root.querySelector('[data-el="currentImg"]');
-const upgradeImgEl = root.querySelector('[data-el="upgradeImg"]');
 
-if (currentImgEl) currentImgEl.src = snap.currentImg || "";
-if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
+    const $ = (sel) => root.querySelector(sel);
+
+    if ($('[data-el="currentImg"]')) $('[data-el="currentImg"]').src = snap.currentImg;
+    if ($('[data-el="upgradeImg"]')) $('[data-el="upgradeImg"]').src = snap.upgradeImg;
+
+    if ($('[data-el="heroSystemTitle"]')) $('[data-el="heroSystemTitle"]').textContent = snap.systemTitle;
+    if ($('[data-el="heroSystemSubtitle"]')) $('[data-el="heroSystemSubtitle"]').textContent = snap.systemSubtitle;
+    if ($('[data-el="recommendedName"]')) $('[data-el="recommendedName"]').textContent = snap.recommendedName;
+
+    const installRangeText = `${formatMoney(LEAF_PRICE_MIN)}–${formatMoney(LEAF_PRICE_MAX)}`;
+    if ($('[data-el="leafInstallRangeBox"]')) $('[data-el="leafInstallRangeBox"]').textContent = installRangeText;
+    if ($('[data-el="leafInstallRangeInline"]')) $('[data-el="leafInstallRangeInline"]').textContent = installRangeText;
+
+    const incentivesSummary = $('[data-el="incentivesSummary"]');
+    if (incentivesSummary){
+      if (INCENTIVES_LOW === 0 && INCENTIVES_HIGH === 0) incentivesSummary.textContent = `No incentives estimated`;
+      else if (INCENTIVES_LOW === 0) incentivesSummary.textContent = `Up to ${formatMoney(INCENTIVES_HIGH)} typical`;
+      else incentivesSummary.textContent = `${formatMoney(INCENTIVES_LOW)}–${formatMoney(INCENTIVES_HIGH)}+ typical`;
+    }
+
+    const priceSlider = $('[data-el="priceSlider"]');
+    if (!priceSlider) return;
+
+    const sliderMin = Math.max(0, LEAF_PRICE_MIN - 2000);
+    const sliderMax = LEAF_PRICE_MAX + 8000;
+    priceSlider.min = sliderMin;
+    priceSlider.max = sliderMax;
+
+    const leafMid = Math.round((LEAF_PRICE_MIN + LEAF_PRICE_MAX) / 2);
+    priceSlider.value = leafMid;
+
+    const priceValue = $('[data-el="priceValue"]');
+    const staticPriceValue = $('[data-el="staticPriceValue"]');
+    const costBadge = $('[data-el="costBadge"]');
+    const overallBadge = $('[data-el="overallBadge"]');
+    const overallHeadline = $('[data-el="overallHeadline"]');
+    const quickReadWhy = $('[data-el="quickReadWhy"]');
+    const qVisible = $('[data-el="quickReadQuestionsVisible"]');
+    const qMore = $('[data-el="quickReadQuestionsMore"]');
+    const decisionBadge = $('[data-el="decisionBadge"]');
+    const priceBandOK = $('[data-el="priceBandOK"]');
+    const priceBandFill = $('[data-el="priceBandFill"]');
+    const priceBandMinLabel = $('[data-el="priceBandMinLabel"]');
+    const priceBandMaxLabel = $('[data-el="priceBandMaxLabel"]');
+    const dynSavings = $('[data-el="dynamicSavingsRange"]');
+    const summarySavings = $('[data-el="summarySavingsRange"]');
+    const heroSavingsPill = $('[data-el="heroSavingsPill"]');
+    const msSavingsRange = $('[data-el="msSavingsRange"]');
+    const msInstallCost = $('[data-el="msInstallCost"]');
+    const msNetCostRange = $('[data-el="msNetCostRange"]');
+    const msValueCheck = $('[data-el="msValueCheck"]');
+    const msMeaning = $('[data-el="msMeaning"]');
+    const msSummaryHeadline = $('[data-el="msSummaryHeadline"]');
+    const msSummaryText = $('[data-el="msSummaryText"]');
+    const resetBtn = $('[data-el="resetBtn"]');
+    const priceBandTrack = $('[data-el="priceBandTrack"]');
+    const staticCostFill = $('[data-el="staticCostFill"]');
+    const staticCostOK = $('[data-el="staticCostOK"]');
+    const staticCostMarker = $('[data-el="staticCostMarker"]');
+    const staticCostMinLabel = $('[data-el="staticCostMinLabel"]');
+    const staticCostMaxLabel = $('[data-el="staticCostMaxLabel"]');
+
+    const renderList = (el, items) => {
+      if (!el) return;
+      el.innerHTML = (items || []).map(t => `<li>${t}</li>`).join("");
+    };
 
     function quickReadMessage(costClass){
       const premiumWhy = [
         "More expensive systems can provide slightly higher savings (better efficiency/controls/commissioning) — usually incremental.",
         "ROI can drop when cost climbs faster than savings. A premium quote should come with clear, measurable value."
       ];
-
       if (costClass === "unreal_low"){
         return {
           tone: "warn",
@@ -1074,7 +938,6 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
           ]
         };
       }
-
       if (costClass === "low"){
         return {
           tone: "good",
@@ -1093,7 +956,6 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
           ]
         };
       }
-
       if (costClass === "in"){
         return {
           tone: "good",
@@ -1112,7 +974,6 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
           ]
         };
       }
-
       if (costClass === "likely_over"){
         return {
           tone: "warn",
@@ -1132,7 +993,6 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
           ]
         };
       }
-
       return {
         tone: "warn",
         headline: "Major caution — this looks overpriced for the category.",
@@ -1152,119 +1012,27 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
       };
     }
 
-    // Query helper scoped to the page
-    const $ = (sel) => root.querySelector(sel);
-
-    // Set header content per page
-    const heroSystemTitle = $('[data-el="heroSystemTitle"]');
-    const heroSystemSubtitle = $('[data-el="heroSystemSubtitle"]');
-    const recommendedName = $('[data-el="recommendedName"]');
-    if (heroSystemTitle) heroSystemTitle.textContent = snap.systemTitle;
-    if (heroSystemSubtitle) heroSystemSubtitle.textContent = snap.systemSubtitle;
-    if (recommendedName) recommendedName.textContent = snap.recommendedName;
-
-    // Update install range displays
-    const leafInstallRangeBox = $('[data-el="leafInstallRangeBox"]');
-    const leafInstallRangeInline = $('[data-el="leafInstallRangeInline"]');
-    const installRangeText = `${formatMoney(LEAF_PRICE_MIN)}–${formatMoney(LEAF_PRICE_MAX)}`;
-    if (leafInstallRangeBox) leafInstallRangeBox.textContent = installRangeText;
-    if (leafInstallRangeInline) leafInstallRangeInline.textContent = installRangeText;
-
-    // Incentives summary
-    const incentivesSummary = $('[data-el="incentivesSummary"]');
-    if (incentivesSummary){
-      if (INCENTIVES_LOW === 0 && INCENTIVES_HIGH === 0) incentivesSummary.textContent = `No incentives estimated`;
-      else if (INCENTIVES_LOW === 0) incentivesSummary.textContent = `Up to ${formatMoney(INCENTIVES_HIGH)} typical`;
-      else incentivesSummary.textContent = `${formatMoney(INCENTIVES_LOW)}–${formatMoney(INCENTIVES_HIGH)}+ typical`;
-    }
-
-    // Slider + UI els
-    const priceSlider = $('[data-el="priceSlider"]');
-    if (!priceSlider) return;
-
-    // set slider min/max around range for this snapshot
-    const sliderMin = Math.max(0, LEAF_PRICE_MIN - 2000);
-    const sliderMax = LEAF_PRICE_MAX + 8000;
-    priceSlider.min = String(sliderMin);
-    priceSlider.max = String(sliderMax);
-
-    // default to middle of leaf range
-    const leafMid = Math.round((LEAF_PRICE_MIN + LEAF_PRICE_MAX) / 2);
-    if (!priceSlider.value || Number(priceSlider.value) < sliderMin || Number(priceSlider.value) > sliderMax){
-      priceSlider.value = String(leafMid);
-    }
-
-    const priceValue = $('[data-el="priceValue"]');
-    const staticPriceValue = $('[data-el="staticPriceValue"]');
-    const costBadge = $('[data-el="costBadge"]');
-    const overallBadge = $('[data-el="overallBadge"]');
-    const overallHeadline = $('[data-el="overallHeadline"]');
-    const quickReadWhy = $('[data-el="quickReadWhy"]');
-    const qVisible = $('[data-el="quickReadQuestionsVisible"]');
-    const qMore = $('[data-el="quickReadQuestionsMore"]');
-
-    const decisionBadge = $('[data-el="decisionBadge"]');
-
-    const priceBandOK = $('[data-el="priceBandOK"]');
-    const priceBandFill = $('[data-el="priceBandFill"]');
-    const priceBandMinLabel = $('[data-el="priceBandMinLabel"]');
-    const priceBandMaxLabel = $('[data-el="priceBandMaxLabel"]');
-
-    const dynSavings = $('[data-el="dynamicSavingsRange"]');
-    const summarySavings = $('[data-el="summarySavingsRange"]');
-    const heroSavingsPill = $('[data-el="heroSavingsPill"]');
-    const msSavingsRange = $('[data-el="msSavingsRange"]');
-
-    const msInstallCost = $('[data-el="msInstallCost"]');
-    const msNetCostRange = $('[data-el="msNetCostRange"]');
-    const msValueCheck = $('[data-el="msValueCheck"]');
-    const msMeaning = $('[data-el="msMeaning"]');
-    const msSummaryHeadline = $('[data-el="msSummaryHeadline"]');
-    const msSummaryText = $('[data-el="msSummaryText"]');
-
-    const resetBtn = $('[data-el="resetBtn"]');
-    const priceBandTrack = $('[data-el="priceBandTrack"]');
-
-    const staticCostFill = $('[data-el="staticCostFill"]');
-    const staticCostOK = $('[data-el="staticCostOK"]');
-    const staticCostMarker = $('[data-el="staticCostMarker"]');
-    const staticCostMinLabel = $('[data-el="staticCostMinLabel"]');
-    const staticCostMaxLabel = $('[data-el="staticCostMaxLabel"]');
-
-    const renderList = (el, items) => {
-      if (!el) return;
-      el.innerHTML = (items || []).map(t => `<li>${t}</li>`).join("");
-    };
-
     function updateUI(){
       const price = Number(priceSlider.value);
-
       if (priceValue) priceValue.textContent = formatMoney(price);
       if (staticPriceValue) staticPriceValue.textContent = formatMoney(price);
       if (msInstallCost) msInstallCost.textContent = formatMoney(price);
-
       const dyn = dynamicSavingsRange(price);
       const savText = `$${dyn.min}–$${dyn.max}/mo`;
-
       if (dynSavings) dynSavings.textContent = savText;
       if (summarySavings) summarySavings.textContent = `$${dyn.min}–$${dyn.max}`;
       if (heroSavingsPill) heroSavingsPill.textContent = `Save ~$${dyn.min}–$${dyn.max}/mo`;
       if (msSavingsRange) msSavingsRange.textContent = savText;
-
       if (priceBandMinLabel) priceBandMinLabel.textContent = formatMoney(LEAF_PRICE_MIN);
       if (priceBandMaxLabel) priceBandMaxLabel.textContent = formatMoney(LEAF_PRICE_MAX);
-
       if (priceBandOK) setBand(priceBandOK, Number(priceSlider.min), Number(priceSlider.max), LEAF_PRICE_MIN, LEAF_PRICE_MAX);
       if (priceBandFill) setFill(priceBandFill, Number(priceSlider.min), Number(priceSlider.max), price);
-
       if (staticCostMinLabel) staticCostMinLabel.textContent = formatMoney(LEAF_PRICE_MIN);
       if (staticCostMaxLabel) staticCostMaxLabel.textContent = formatMoney(LEAF_PRICE_MAX);
       if (staticCostOK) setBand(staticCostOK, Number(priceSlider.min), Number(priceSlider.max), LEAF_PRICE_MIN, LEAF_PRICE_MAX);
       if (staticCostFill) setFill(staticCostFill, Number(priceSlider.min), Number(priceSlider.max), price);
       if (staticCostMarker) setMarker(staticCostMarker, Number(priceSlider.min), Number(priceSlider.max), price);
-
       const costClass = classifyCost(price);
-
       if (costBadge){
         if (costClass === "unreal_low") setBadge(costBadge, "bad", "Unrealistic");
         else if (costClass === "low") setBadge(costBadge, "warn", "Low (verify scope)");
@@ -1272,25 +1040,20 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
         else if (costClass === "likely_over") setBadge(costBadge, "warn", "Likely overpriced");
         else setBadge(costBadge, "good", "Within range");
       }
-
       const msg = quickReadMessage(costClass);
-
       if (overallBadge){
         if (costClass === "over") setBadge(overallBadge, "bad", "Major caution 🚩");
         else if (msg.tone === "good") setBadge(overallBadge, "good", "Looks good ✅");
         else setBadge(overallBadge, "warn", "Proceed smart ⚠️");
       }
       if (overallHeadline) overallHeadline.textContent = msg.headline;
-
       renderList(quickReadWhy, msg.why);
       renderList(qVisible, msg.qVisible);
       renderList(qMore, msg.qMore);
-
       const net = computeNetCostRange(price, INCENTIVES_LOW, INCENTIVES_HIGH);
       const netMin = Math.min(net.netLow, net.netHigh);
       const netMax = Math.max(net.netLow, net.netHigh);
       if (msNetCostRange) msNetCostRange.textContent = formatMoneyRange(netMin, netMax);
-
       if (msValueCheck && msMeaning){
         if (costClass === "in"){
           msValueCheck.textContent = "Within range ✅";
@@ -1309,7 +1072,6 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
           msMeaning.textContent = "This is likely overpriced. Compare another itemized bid before committing.";
         }
       }
-
       if (decisionBadge && msSummaryHeadline && msSummaryText){
         if (costClass === "over"){
           setBadge(decisionBadge, "bad", "Unclear 🚩");
@@ -1342,31 +1104,23 @@ if (upgradeImgEl) upgradeImgEl.src = snap.upgradeImg || "";
 
     priceSlider.addEventListener("input", updateUI);
     if (resetBtn) resetBtn.addEventListener("click", resetToLeafMid);
-
     updateUI();
   }
 
-  // =========================
-  // PAGE 3: clone page 2 markup (so you get 3 pages now)
-  // =========================
   const leafPages = Array.from(document.querySelectorAll(".leaf-page"));
-  if (leafPages.length >= 2 && leafPages[2] && leafPages[2].children.length === 0){
-    leafPages[2].innerHTML = leafPages[1].innerHTML;
+  if (leafPages.length >= 3 && leafPages[2].children.length === 0){
+    leafPages[2].innerHTML = leafPages[0].innerHTML;  // Clone page 1 content for page 3 (Windows)
   }
 
-  // Initialize all pages
   const pages = Array.from(document.querySelectorAll(".leaf-page"));
   pages.forEach((page, idx) => initLeafPage(page, idx));
 
-  // Ensure pager label correct on load
   setActiveDot(0);
 
-  // Keep snapping accurate on resize
   window.addEventListener("resize", () => {
     const i = dots.findIndex(d => d.classList.contains("active"));
     scrollToPage(Math.max(0, i));
   });
 </script>
-
 </body>
 </html>
